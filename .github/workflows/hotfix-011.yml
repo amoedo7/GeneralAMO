@@ -1,0 +1,75 @@
+name: hotfix-011
+
+on:
+  push:
+    branches: [fix/0.1.11-device-regression]
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: fix/0.1.11-device-regression
+      - name: Apply device regression hotfix
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          java_path = Path('app/src/main/java/com/desarrollamo/generalamo/MainActivity.java')
+          java = java_path.read_text(encoding='utf-8')
+          if 'android.webkit.WebChromeClient' not in java:
+              java = java.replace('import android.app.Activity;\n', 'import android.app.Activity;\nimport android.app.AlertDialog;\n')
+              java = java.replace('import android.webkit.JavascriptInterface;\n', 'import android.webkit.JavascriptInterface;\nimport android.webkit.JsResult;\n')
+              java = java.replace('import android.webkit.WebViewClient;\n', 'import android.webkit.WebViewClient;\nimport android.webkit.WebChromeClient;\n')
+              marker = '        webView.setWebViewClient(new WebViewClient());\n'
+              chrome = '''        webView.setWebViewClient(new WebViewClient());
+        webView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onJsConfirm(WebView view, String url, String message, JsResult result) {
+                new AlertDialog.Builder(MainActivity.this)
+                        .setMessage(message)
+                        .setPositiveButton("Confirmar", (dialog, which) -> result.confirm())
+                        .setNegativeButton("Cancelar", (dialog, which) -> result.cancel())
+                        .setOnCancelListener(dialog -> result.cancel())
+                        .show();
+                return true;
+            }
+
+            @Override
+            public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+                new AlertDialog.Builder(MainActivity.this)
+                        .setMessage(message)
+                        .setPositiveButton("Aceptar", (dialog, which) -> result.confirm())
+                        .setOnCancelListener(dialog -> result.cancel())
+                        .show();
+                return true;
+            }
+        });
+'''
+              if marker not in java:
+                  raise SystemExit('WebViewClient marker not found')
+              java = java.replace(marker, chrome, 1)
+              java_path.write_text(java, encoding='utf-8')
+
+          Path('version.properties').write_text('VERSION_NAME=0.1.11\nVERSION_CODE=1011\n', encoding='utf-8')
+
+          test_path = Path('scripts/validate_mvp.py')
+          test = test_path.read_text(encoding='utf-8')
+          test = test.replace("required_java = ['addJavascriptInterface', 'ServerSocket', 'startSharing', 'updateSharedState', '/api/state', '/api/score']", "required_java = ['addJavascriptInterface', 'ServerSocket', 'startSharing', 'updateSharedState', '/api/state', '/api/score', 'WebChromeClient', 'onJsConfirm', 'result.confirm()', 'result.cancel()']")
+          test = test.replace("assert m_name.group(1) == '0.1.10'", "assert m_name.group(1) == '0.1.11'")
+          test = test.replace("assert int(m_code.group(1)) == 1010", "assert int(m_code.group(1)) == 1011")
+          test_path.write_text(test, encoding='utf-8')
+          PY
+          python scripts/validate_mvp.py
+      - name: Commit hotfix and remove temporary workflow
+        run: |
+          git config user.name 'DesarrollAMO CI'
+          git config user.email 'actions@users.noreply.github.com'
+          git rm .github/workflows/hotfix-011.yml
+          git add app/src/main/java/com/desarrollamo/generalamo/MainActivity.java version.properties scripts/validate_mvp.py
+          git commit -m 'GeneralAMO 0.1.11 · fix device confirmation and publish real UI'
+          git push origin HEAD:fix/0.1.11-device-regression
