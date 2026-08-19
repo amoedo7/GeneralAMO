@@ -29,16 +29,35 @@ jobs:
       - name: Validate GeneralAMO regression contract
         run: python scripts/validate_mvp.py
 
-      - name: Prepare fixed signing key
+      - name: Prepare secure signing key
+        env:
+          GENERALAMO_SIGNING_KEY_B64: ${{ secrets.GENERALAMO_SIGNING_KEY_B64 }}
+          GENERALAMO_STORE_PASSWORD: ${{ secrets.GENERALAMO_STORE_PASSWORD }}
+          GENERALAMO_KEY_ALIAS: ${{ secrets.GENERALAMO_KEY_ALIAS }}
+          GENERALAMO_KEY_PASSWORD: ${{ secrets.GENERALAMO_KEY_PASSWORD }}
         run: |
           set -euo pipefail
-          base64 -d ci/generalamo-candidate.keystore.b64 > ci/generalamo-candidate.keystore
-          keytool -list -keystore ci/generalamo-candidate.keystore -storepass generalamo -alias generalamo >/dev/null
+          test -n "$GENERALAMO_SIGNING_KEY_B64"
+          test -n "$GENERALAMO_STORE_PASSWORD"
+          test -n "$GENERALAMO_KEY_ALIAS"
+          test -n "$GENERALAMO_KEY_PASSWORD"
+          printf '%s' "$GENERALAMO_SIGNING_KEY_B64" | base64 -d > "$RUNNER_TEMP/generalamo-release.jks"
+          chmod 600 "$RUNNER_TEMP/generalamo-release.jks"
+          keytool -list \
+            -keystore "$RUNNER_TEMP/generalamo-release.jks" \
+            -storepass "$GENERALAMO_STORE_PASSWORD" \
+            -alias "$GENERALAMO_KEY_ALIAS" >/dev/null
 
       - name: Build release APK
+        env:
+          GENERALAMO_KEYSTORE_PATH: ${{ runner.temp }}/generalamo-release.jks
+          GENERALAMO_STORE_PASSWORD: ${{ secrets.GENERALAMO_STORE_PASSWORD }}
+          GENERALAMO_KEY_ALIAS: ${{ secrets.GENERALAMO_KEY_ALIAS }}
+          GENERALAMO_KEY_PASSWORD: ${{ secrets.GENERALAMO_KEY_PASSWORD }}
+          CI_RELEASE_SIGNING_REQUIRED: 'true'
         run: gradle :app:assembleRelease --stacktrace
 
-      - name: Verify APK identity and version
+      - name: Verify APK identity, version and signing certificate
         run: |
           set -euo pipefail
           APK="app/build/outputs/apk/release/app-release.apk"
@@ -49,7 +68,8 @@ jobs:
           test -n "$VERSION_CODE"
           "$ANDROID_SDK_ROOT/build-tools/35.0.0/aapt" dump badging "$APK" | tee /tmp/badging.txt
           grep -q "package: name='com.desarrollamo.generalamo' versionCode='${VERSION_CODE}' versionName='${VERSION}'" /tmp/badging.txt
-          jarsigner -verify -certs "$APK" >/dev/null
+          "$ANDROID_SDK_ROOT/build-tools/35.0.0/apksigner" verify --print-certs "$APK" | tee /tmp/signing.txt
+          grep -q 'Signer #1 certificate SHA-256 digest:' /tmp/signing.txt
 
       - name: Prepare release artifacts
         run: |
@@ -58,6 +78,9 @@ jobs:
           mkdir -p dist
           cp app/build/outputs/apk/release/app-release.apk "dist/GeneralAMO-${VERSION}.apk"
           sha256sum "dist/GeneralAMO-${VERSION}.apk" > dist/SHA256SUMS.txt
+          "$ANDROID_SDK_ROOT/build-tools/35.0.0/apksigner" verify --print-certs "dist/GeneralAMO-${VERSION}.apk" \
+            | sed -n 's/^Signer #1 certificate SHA-256 digest: /SIGNING_CERT_SHA256=/p' \
+            > dist/SIGNING_CERT_SHA256.txt
           echo "VERSION=${VERSION}"
           echo "PACKAGE=com.desarrollamo.generalamo"
 
@@ -73,8 +96,11 @@ jobs:
         run: |
           set -euo pipefail
           VERSION="$(sed -n 's/^VERSION_NAME=//p' version.properties)"
-          gh release create "v${VERSION}" dist/GeneralAMO-${VERSION}.apk dist/SHA256SUMS.txt \
+          gh release create "v${VERSION}" \
+            dist/GeneralAMO-${VERSION}.apk \
+            dist/SHA256SUMS.txt \
+            dist/SIGNING_CERT_SHA256.txt \
             --repo "$GITHUB_REPOSITORY" \
             --target "$GITHUB_SHA" \
             --title "GeneralAMO ${VERSION}" \
-            --notes "GeneralAMO 0.1.13 estable: se elimina el paso de turno sin anotación, se refuerza la adaptación a teléfono/tablet/escritorio, los dados web usan pips CSS consistentes en PC y el semáforo de anotaciones rojo/amarillo/verde queda visible también en navegador. Mantiene reglas tradicionales, historial, actividad detallada y juego por Wi-Fi/hotspot."
+            --notes "GeneralAMO release firmada mediante GitHub Actions Secrets. La clave privada no forma parte del repositorio ni del artefacto público."
