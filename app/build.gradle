@@ -2,7 +2,18 @@ plugins {
     id 'com.android.application'
 }
 
-def buildNumber = (System.getenv('GITHUB_RUN_NUMBER') ?: '1').toInteger()
+def versionProps = new Properties()
+def versionFile = file('../version.properties')
+if (!versionFile.exists()) {
+    throw new GradleException('version.properties is required')
+}
+versionFile.withInputStream { versionProps.load(it) }
+
+def appVersionName = versionProps.getProperty('VERSION_NAME')
+def appVersionCode = versionProps.getProperty('VERSION_CODE')?.toInteger()
+if (!appVersionName || appVersionCode == null) {
+    throw new GradleException('VERSION_NAME and VERSION_CODE are required')
+}
 
 android {
     namespace 'com.desarrollamo.generalamo'
@@ -12,8 +23,8 @@ android {
         applicationId 'com.desarrollamo.generalamo'
         minSdk 26
         targetSdk 35
-        versionCode 1000 + buildNumber
-        versionName "0.1.${buildNumber}"
+        versionCode appVersionCode
+        versionName appVersionName
     }
 
     signingConfigs {
