@@ -2,8 +2,8 @@
   "schema": "storeamo.app.v1",
   "id": "generalamo",
   "name": "GeneralAMO",
-  "tagline": "Generala para jugar o anotar, incluso sin Internet.",
-  "description": "Juego y marcador local-first de Generala con dados físicos o digitales. La primera candidate funciona offline; compartir por Wi-Fi/hotspot y Bluetooth queda para versiones siguientes.",
+  "tagline": "Generala para jugar, anotar y compartir en la misma red.",
+  "description": "Juego y marcador local-first de Generala con dados físicos o digitales. Guarda la partida, permite eliminar jugadores, conserva puntajes entre turnos y puede compartir una mesa por Wi-Fi/hotspot con enlaces separados de lectura y edición. Bluetooth queda para una versión posterior.",
   "category": "Juegos",
   "audience": "public",
   "featured": true,
@@ -11,7 +11,7 @@
   "supported_platforms": ["android"],
   "store": {
     "screenshots": [],
-    "notes": "Nueva línea separada de GeneralaAMO 0.7.0-beta. Package: com.desarrollamo.generalamo. Candidate local-first sin red."
+    "notes": "Nueva línea separada de GeneralaAMO 0.7.0-beta. Package: com.desarrollamo.generalamo. Candidate local-first con acceso compartido por Wi-Fi/hotspot."
   },
   "release": {
     "provider": "github",
