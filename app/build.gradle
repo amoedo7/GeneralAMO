@@ -1,0 +1,40 @@
+plugins {
+    id 'com.android.application'
+}
+
+def buildNumber = (System.getenv('GITHUB_RUN_NUMBER') ?: '1').toInteger()
+
+android {
+    namespace 'com.desarrollamo.generalamo'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'com.desarrollamo.generalamo'
+        minSdk 26
+        targetSdk 35
+        versionCode 1000 + buildNumber
+        versionName "0.1.${buildNumber}"
+    }
+
+    signingConfigs {
+        candidate {
+            storeFile file('../ci/generalamo-candidate.keystore')
+            storePassword 'generalamo'
+            keyAlias 'generalamo'
+            keyPassword 'generalamo'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            shrinkResources false
+            signingConfig signingConfigs.candidate
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.13.2'
+}
