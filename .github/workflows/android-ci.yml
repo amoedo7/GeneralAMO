@@ -1,0 +1,58 @@
+name: android-ci
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+      - name: Install Android SDK
+        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+      - name: Validate local-first MVP
+        run: python scripts/validate_mvp.py
+      - name: Prepare fixed candidate signing key
+        run: |
+          base64 -d ci/generalamo-candidate.keystore.b64 > ci/generalamo-candidate.keystore
+          keytool -list -keystore ci/generalamo-candidate.keystore -storepass generalamo -alias generalamo >/dev/null
+      - name: Build release APK
+        run: gradle :app:assembleRelease --stacktrace
+      - name: Prepare release artifacts
+        run: |
+          VERSION="0.1.${GITHUB_RUN_NUMBER}"
+          mkdir -p dist
+          cp app/build/outputs/apk/release/app-release.apk "dist/GeneralAMO-${VERSION}.apk"
+          sha256sum "dist/GeneralAMO-${VERSION}.apk" > dist/SHA256SUMS.txt
+          echo "VERSION=${VERSION}"
+          echo "VERSION_CODE=$((1000 + GITHUB_RUN_NUMBER))"
+          echo "PACKAGE=com.desarrollamo.generalamo"
+      - uses: actions/upload-artifact@v6
+        with:
+          name: GeneralAMO-release
+          path: dist/*
+      - name: Publish candidate release
+        if: github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="0.1.${GITHUB_RUN_NUMBER}"
+          gh release create "v${VERSION}" dist/GeneralAMO-${VERSION}.apk dist/SHA256SUMS.txt \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --title "GeneralAMO ${VERSION}" \
+            --notes "GeneralAMO candidate: marcador local, dados digitales, persistencia y modo offline. Wi-Fi/Bluetooth todavía no incluidos." \
+            --prerelease
