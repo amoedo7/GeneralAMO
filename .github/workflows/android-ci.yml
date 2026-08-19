@@ -21,18 +21,34 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.7'
+
       - name: Install Android SDK
         run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+
       - name: Validate local-first MVP
         run: python scripts/validate_mvp.py
+
       - name: Prepare fixed candidate signing key
         run: |
+          set -euo pipefail
           base64 -d ci/generalamo-candidate.keystore.b64 > ci/generalamo-candidate.keystore
           keytool -list -keystore ci/generalamo-candidate.keystore -storepass generalamo -alias generalamo >/dev/null
+
       - name: Build release APK
         run: gradle :app:assembleRelease --stacktrace
+
+      - name: Verify APK identity
+        run: |
+          set -euo pipefail
+          APK="app/build/outputs/apk/release/app-release.apk"
+          test -f "$APK"
+          "$ANDROID_SDK_ROOT/build-tools/35.0.0/aapt" dump badging "$APK" | tee /tmp/badging.txt
+          grep -q "package: name='com.desarrollamo.generalamo'" /tmp/badging.txt
+          jarsigner -verify -certs "$APK" >/dev/null
+
       - name: Prepare release artifacts
         run: |
+          set -euo pipefail
           VERSION="0.1.${GITHUB_RUN_NUMBER}"
           mkdir -p dist
           cp app/build/outputs/apk/release/app-release.apk "dist/GeneralAMO-${VERSION}.apk"
@@ -40,15 +56,18 @@ jobs:
           echo "VERSION=${VERSION}"
           echo "VERSION_CODE=$((1000 + GITHUB_RUN_NUMBER))"
           echo "PACKAGE=com.desarrollamo.generalamo"
+
       - uses: actions/upload-artifact@v6
         with:
           name: GeneralAMO-release
           path: dist/*
+
       - name: Publish candidate release
         if: github.ref == 'refs/heads/main'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          set -euo pipefail
           VERSION="0.1.${GITHUB_RUN_NUMBER}"
           gh release create "v${VERSION}" dist/GeneralAMO-${VERSION}.apk dist/SHA256SUMS.txt \
             --repo "$GITHUB_REPOSITORY" \
