@@ -3,7 +3,7 @@
   "id": "generalamo",
   "name": "GeneralAMO",
   "tagline": "Generala para jugar, anotar y compartir en la misma red.",
-  "description": "Juego y marcador local-first de Generala con dados físicos o digitales. Guarda partidas e historial, muestra turnos y actividad detallada, aplica servido y tachadas, y permite jugar o anotar desde varios dispositivos en la misma Wi-Fi/hotspot mediante enlaces separados de lectura y juego.",
+  "description": "Juego y marcador local-first de Generala con dados físicos o digitales. Guarda partidas e historial, muestra turnos y actividad detallada, aplica servido y tachadas, y permite jugar o anotar desde varios dispositivos en la misma Wi-Fi/hotspot mediante enlaces separados de lectura y juego. La interfaz se adapta a teléfono, tablet y escritorio.",
   "category": "Juegos",
   "audience": "public",
   "featured": true,
@@ -11,12 +11,12 @@
   "supported_platforms": ["android"],
   "store": {
     "screenshots": [],
-    "notes": "Línea GeneralAMO 0.1.x. Package estable: com.desarrollamo.generalamo. Candidate local-first con partidas persistentes y juego web local por Wi-Fi/hotspot."
+    "notes": "GeneralAMO estable para uso funcional. Package: com.desarrollamo.generalamo. Partidas persistentes, historial, reglas tradicionales, juego web local y diseño responsive. El sello StoreAMO Verified sigue dependiendo del proceso de verificación separado."
   },
   "release": {
     "provider": "github",
     "repo": "amoedo7/GeneralAMO",
-    "channel": "beta",
+    "channel": "stable",
     "assets": [
       {
         "platform": "android",
