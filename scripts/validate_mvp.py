@@ -63,6 +63,7 @@ required_java = [
 ]
 missing_java = [item for item in required_java if item not in java]
 assert not missing_java, f'Missing native sharing markers: {missing_java}'
+assert 'type.equals("skip")' not in java, 'Native API must reject pass-turn actions'
 
 required_chrome = ['WebChromeClient', 'onJsConfirm', 'result.confirm()', 'result.cancel()', 'AlertDialog']
 missing_chrome = [item for item in required_chrome if item not in chrome]
