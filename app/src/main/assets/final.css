@@ -1,0 +1,102 @@
+/* GeneralAMO 0.1.13 · cierre responsive y contraste de anotaciones */
+
+/* La Generala no permite “pasar” sin usar una categoría. Se conserva el nodo
+   sólo para compatibilidad con el JS de versiones anteriores, pero no existe en UI. */
+#skip{display:none!important}
+
+/* Dados: tamaño estable en escritorio/tablet y distribución fluida en móvil. */
+.dice{
+  grid-template-columns:repeat(5,minmax(72px,108px));
+  justify-content:center;
+  align-items:center;
+  max-width:620px;
+  margin-left:auto;
+  margin-right:auto;
+}
+.die{
+  width:100%;
+  max-width:108px;
+  min-width:0;
+  justify-self:center;
+}
+.pip{
+  width:clamp(8px,1.05vw,12px);
+  height:clamp(8px,1.05vw,12px);
+}
+
+/* El semáforo debe seguir siendo inequívoco también en Chrome/PC y WebView. */
+.cell.filled{
+  border-color:rgba(255,255,255,.22);
+  color:#fff;
+  -webkit-text-fill-color:currentColor;
+  font-weight:950;
+}
+.cell.mark-last{
+  background:#b92f49!important;
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.18),0 0 0 1px rgba(185,47,73,.25);
+}
+.cell.mark-prev{
+  background:#e1ae2f!important;
+  color:#17202a!important;
+  -webkit-text-fill-color:#17202a!important;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.22),0 0 0 1px rgba(225,174,47,.3);
+}
+.cell.mark-old{
+  background:#278d61!important;
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.15),0 0 0 1px rgba(39,141,97,.25);
+}
+.cell.zeroFilled::placeholder{color:transparent}
+
+/* Las tarjetas de selección conservan exactamente el mismo código visual. */
+.pick.mark-last{background:linear-gradient(135deg,#a9293f,#d8495b)!important;color:#fff!important}
+.pick.mark-prev{background:linear-gradient(135deg,#c28d16,#efbd3b)!important;color:#17202a!important}
+.pick.mark-old{background:linear-gradient(135deg,#247c54,#38a96e)!important;color:#fff!important}
+.pick.used small{color:inherit;opacity:.82}
+
+/* Escritorio ancho: usar el espacio disponible sin agrandar absurdamente los dados. */
+@media(min-width:1000px){
+  .shell,.bottomInner{max-width:1180px}
+  .digitalPanel,.diceWrap{padding:22px 26px}
+  .preview{grid-template-columns:repeat(3,minmax(180px,1fr))}
+  .gameMeta{grid-template-columns:repeat(3,minmax(180px,1fr))}
+  .score th,.score td{min-width:112px}
+  .score th:first-child,.score td:first-child{min-width:150px;max-width:150px}
+}
+
+/* Tablets / notebooks compactas. */
+@media(min-width:701px) and (max-width:999px){
+  .dice{grid-template-columns:repeat(5,minmax(68px,96px));max-width:560px}
+  .die{max-width:96px}
+}
+
+/* Teléfonos: los cinco dados siempre caben sin scroll horizontal. */
+@media(max-width:700px){
+  .dice{
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    justify-content:stretch;
+    width:100%;
+    max-width:none;
+    gap:6px;
+  }
+  .die{max-width:none;width:100%;padding:7px}
+  .pip{width:clamp(7px,2.3vw,9px);height:clamp(7px,2.3vw,9px)}
+}
+
+/* Pantallas muy angostas y landscape de baja altura. */
+@media(max-width:380px){
+  .dice{gap:4px}
+  .die{padding:5px;border-radius:14px}
+  .pip{width:7px;height:7px}
+}
+@media(max-height:560px) and (orientation:landscape){
+  .shell{padding-top:8px;padding-bottom:86px}
+  .header{min-height:48px}
+  .miniDie{width:36px;height:36px;font-size:20px}
+  .brand{font-size:24px}
+  .dice{grid-template-columns:repeat(5,minmax(58px,82px));max-width:470px}
+  .die{max-width:82px}
+}

@@ -3,6 +3,7 @@ import re
 
 html = Path('app/src/main/assets/index.html').read_text(encoding='utf-8')
 css = Path('app/src/main/assets/style.css').read_text(encoding='utf-8')
+final_css = Path('app/src/main/assets/final.css').read_text(encoding='utf-8')
 js = Path('app/src/main/assets/app.js').read_text(encoding='utf-8')
 remote = Path('app/src/main/assets/remote.html').read_text(encoding='utf-8')
 java = Path('app/src/main/java/com/desarrollamo/generalamo/MainActivity.java').read_text(encoding='utf-8')
@@ -15,6 +16,8 @@ required_html = [
     'GeneralAMO', 'Anotar partida', 'Jugar con dados', 'Tirar dados', 'Deshacer',
     'Nueva partida', 'Jugar en varios dispositivos', 'Enlace para jugar / anotar',
     'Escalera servida', 'Full servido', 'Póker servido', 'Tachar',
+    'final.css', 'id="skip" class="btn hidden"',
+    'El turno termina únicamente al anotar o tachar una categoría libre.',
 ]
 missing = [item for item in required_html if item not in html]
 assert not missing, f'Missing UI markers: {missing}'
@@ -33,11 +36,25 @@ required_remote = [
     'MISMA WI‑FI / HOTSPOT', 'Podés jugar y anotar desde este dispositivo',
     '/api/action?token=', "type:'roll'", "type:'hold'", "type:'digital-score'",
     "type:'score'", 'setInterval(load,650)', '❌ Tachar',
+    'function pipPositions', 'function scoreRecency', 'score-last', 'score-prev', 'score-old',
+    'repeat(5,minmax(72px,108px))',
 ]
 missing_remote = [item for item in required_remote if item not in remote]
 assert not missing_remote, f'Missing remote-play markers: {missing_remote}'
+assert 'Pasar turno' not in remote, 'Remote play must not expose a pass-turn control'
+assert "type:'skip'" not in remote, 'Remote UI must not send skip actions'
 assert '__EDITOR__' in remote and '__CODE__' in remote and '__TOKEN__' in remote
 assert 'eval(' not in remote
+
+required_final_css = [
+    '#skip{display:none!important}',
+    'repeat(5,minmax(72px,108px))',
+    '.cell.mark-last', '.cell.mark-prev', '.cell.mark-old',
+    '@media(min-width:1000px)', '@media(max-width:700px)',
+    '@media(max-height:560px) and (orientation:landscape)',
+]
+missing_final_css = [item for item in required_final_css if item not in final_css]
+assert not missing_final_css, f'Missing responsive/final CSS markers: {missing_final_css}'
 
 required_java = [
     'addJavascriptInterface', 'ServerSocket', 'startSharing', 'updateSharedState',
@@ -46,6 +63,7 @@ required_java = [
 ]
 missing_java = [item for item in required_java if item not in java]
 assert not missing_java, f'Missing native sharing markers: {missing_java}'
+assert 'type.equals("skip")' not in java, 'Native API must reject pass-turn actions'
 
 required_chrome = ['WebChromeClient', 'onJsConfirm', 'result.confirm()', 'result.cancel()', 'AlertDialog']
 missing_chrome = [item for item in required_chrome if item not in chrome]
@@ -60,7 +78,7 @@ assert '.activityItem' in css and '.resultCard' in css and '.overlay' in css
 m_name = re.search(r'^VERSION_NAME=(.+)$', version, re.M)
 m_code = re.search(r'^VERSION_CODE=(\d+)$', version, re.M)
 assert m_name and m_code, 'Version properties missing'
-assert m_name.group(1) == '0.1.12'
-assert int(m_code.group(1)) == 1012
+assert m_name.group(1) == '0.1.13'
+assert int(m_code.group(1)) == 1013
 
-print('GENERALAMO_MVP_OK', m_name.group(1), m_code.group(1))
+print('GENERALAMO_FINAL_OK', m_name.group(1), m_code.group(1))

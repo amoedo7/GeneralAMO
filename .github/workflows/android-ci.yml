@@ -29,7 +29,7 @@ jobs:
       - name: Validate GeneralAMO regression contract
         run: python scripts/validate_mvp.py
 
-      - name: Prepare fixed candidate signing key
+      - name: Prepare fixed signing key
         run: |
           set -euo pipefail
           base64 -d ci/generalamo-candidate.keystore.b64 > ci/generalamo-candidate.keystore
@@ -66,7 +66,7 @@ jobs:
           name: GeneralAMO-release
           path: dist/*
 
-      - name: Publish candidate release
+      - name: Publish stable release
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
           GH_TOKEN: ${{ github.token }}
@@ -77,4 +77,4 @@ jobs:
             --repo "$GITHUB_REPOSITORY" \
             --target "$GITHUB_SHA" \
             --title "GeneralAMO ${VERSION}" \
-            --notes "GeneralAMO 0.1.12: reglas tradicionales aclaradas, servido +5 en Escalera/Full/Póker al primer tiro, tachar con 0, historial con vista de partida, actividad detallada, ganador al cierre y juego completo desde otros dispositivos por Wi-Fi/hotspot."
+            --notes "GeneralAMO 0.1.13 estable: se elimina el paso de turno sin anotación, se refuerza la adaptación a teléfono/tablet/escritorio, los dados web usan pips CSS consistentes en PC y el semáforo de anotaciones rojo/amarillo/verde queda visible también en navegador. Mantiene reglas tradicionales, historial, actividad detallada y juego por Wi-Fi/hotspot."
