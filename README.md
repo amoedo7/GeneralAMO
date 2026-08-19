@@ -2,102 +2,99 @@
 
 **Generala local-first con marcador, dados digitales y juego compartido.**
 
-Estado actual: `development` · repo oficial creado a partir de la incubación en IdeAMO.
+Estado actual: `candidate` · Android · distribuida mediante StoreAMO.
 
 ## Qué es
 
 GeneralAMO convierte el teléfono en la mesa de puntuación de una partida de Generala y, cuando querés, también en los propios dados.
 
-La app tendrá dos experiencias sobre un único motor:
+Tiene dos experiencias sobre el mismo estado de partida:
 
 - **Anotar partida**: para usar dados físicos y reemplazar la hoja de papel.
-- **Jugar con dados**: cinco dados digitales, hasta tres tiradas, retener/liberar y anotar la categoría elegida.
+- **Jugar con dados**: cinco dados digitales, hasta tres tiradas, retener/liberar y guardar la categoría elegida.
 
-El objetivo es que una partida pueda empezar rápido, funcione sin Internet y pueda compartirse con otros dispositivos cercanos sin que la conectividad sea requisito para terminarla.
+La partida funciona sin Internet y queda guardada en el dispositivo. Si todos están en la misma Wi-Fi o hotspot, el teléfono que creó la mesa puede publicar un enlace para mirar y otro enlace separado para editar puntuaciones.
 
-## Importante: convivencia con la app vieja
+## Convivencia con la app anterior
 
-Esta nueva línea usa una identidad separada de la antigua `GeneralaAMO 0.7.0-beta`.
+La nueva línea usa una identidad separada de `GeneralaAMO 0.7.0-beta`:
 
 ```text
 Legacy instalada:  GeneralaAMO
 Package legacy:     com.desarrollamo.generalaamo
 
 Nueva línea:        GeneralAMO
-Package previsto:   com.desarrollamo.generalamo
-StoreAMO id:        generalamo
+Package:             com.desarrollamo.generalamo
+StoreAMO id:         generalamo
 ```
 
-Esto permite probar GeneralAMO sin desinstalar la beta que todavía funciona. La app vieja sólo se retirará cuando la nueva demuestre que cubre y mejora su flujo principal.
+Esto permite probar GeneralAMO sin desinstalar la beta anterior.
 
-## Prioridades
+## Candidate actual
 
-1. partida completa offline;
-2. 1–8 jugadores;
-3. marcador y dados digitales con el mismo motor de reglas;
-4. persistencia y recuperación;
-5. undo e historial;
-6. misma Wi‑Fi / hotspot;
-7. Bluetooth como transporte secundario;
-8. instalación y actualización mediante StoreAMO.
+Disponible ahora:
 
-No hay cuentas obligatorias ni backend para el MVP.
+- 1–8 jugadores;
+- agregar y eliminar jugadores;
+- marcador para dados físicos;
+- dados digitales con tres tiradas;
+- retener/liberar cada dado;
+- cálculo de categorías;
+- persistencia local entre aperturas y turnos;
+- deshacer anotaciones;
+- historial local de partidas archivadas;
+- modo claro/oscuro según preferencia;
+- acceso compartido por misma Wi-Fi/hotspot;
+- enlace de solo lectura;
+- enlace distinto con permiso para editar puntos;
+- APK firmado con identidad estable para actualizaciones desde StoreAMO.
 
-## Estado de implementación
+Pendiente para versiones posteriores:
 
-Ya se migraron desde IdeAMO:
+- Bluetooth como segundo transporte;
+- sincronización más rica de eventos y presencia;
+- estadísticas avanzadas;
+- mayor cobertura automatizada de reglas y partidas completas.
 
-- especificación de producto;
-- auditoría del material histórico;
-- arquitectura v1;
-- roadmap;
-- prototipo web integrado de `Anotar partida` + `Jugar con dados`;
-- manifest inicial de StoreAMO en estado `development`.
+No hay cuentas obligatorias ni backend para jugar.
 
-Todavía **no hay APK oficial ni Release candidata**. Mientras no exista un artefacto probado, StoreAMO debe mostrar GeneralAMO dentro de **Lo que se viene**, no como una app instalable.
-
-## Estructura actual
+## Estructura
 
 ```text
+app/
+  src/main/assets/index.html
+  src/main/java/com/desarrollamo/generalamo/MainActivity.java
+  src/main/AndroidManifest.xml
+ci/
 docs/
-  PRODUCT.md
-  ARCHITECTURE.md
-  LEGACY_AUDIT.md
-  ROADMAP.md
 prototype/
-  index.html
+scripts/
 storeamo.json
 SECURITY.md
 PRIVACY.md
 ```
 
-La próxima fase es convertir el prototipo en un core testeable y una app Android local-first con package estable `com.desarrollamo.generalamo`.
-
 ## StoreAMO
 
-El repositorio se declara a sí mismo mediante `storeamo.json`. StoreAMO no debe necesitar código hardcodeado para conocer GeneralAMO.
-
-Ciclo previsto:
+El repositorio se declara mediante `storeamo.json`. Cada push de `main` valida el MVP, reconstruye el APK con la misma firma candidate, comprueba el package `com.desarrollamo.generalamo`, genera SHA-256 y publica una GitHub Release.
 
 ```text
 GeneralAMO repo
-→ tests
+→ validación
 → APK firmado
+→ SHA-256
 → GitHub Release
 → StoreAMO-Catalog
-→ StoreAMO-Verify
-→ OBTENER
-→ ABRIR
-→ ACTUALIZAR
-→ AL DÍA
+→ OBTENER / ACTUALIZAR
 ```
+
+GeneralAMO continúa como `candidate`; compilar correctamente no equivale por sí solo a obtener el sello `verified`.
 
 ## Principios
 
 - local-first;
 - permisos mínimos;
-- reglas fuera de la UI;
-- sin manipular resultados de dados;
 - conectividad opcional;
-- identidad DesarrollAMO, más lúdica y luminosa que StoreAMO;
-- no marcar `verified` sólo porque compile.
+- actualizaciones sin cambiar package ni firma;
+- no publicar funciones ficticias;
+- identidad DesarrollAMO con personalidad propia para el juego.
