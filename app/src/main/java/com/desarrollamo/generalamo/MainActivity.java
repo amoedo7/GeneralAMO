@@ -272,7 +272,7 @@ public class MainActivity extends Activity {
 
         private boolean validAction(JSONObject action) {
             String type = action.optString("type", "");
-            if (type.equals("roll") || type.equals("skip")) return true;
+            if (type.equals("roll")) return true;
 
             if (type.equals("hold")) {
                 int index = action.optInt("index", -1);
