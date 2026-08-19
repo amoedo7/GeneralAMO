@@ -13,14 +13,14 @@ icon = Path('app/src/main/res/drawable/ic_generalamo.xml').read_text(encoding='u
 
 required_html = [
     'GeneralAMO', 'Anotar partida', 'Jugar con dados', 'Tirar dados', 'Deshacer',
-    'Nueva partida', 'Ver partida', 'Jugar en varios dispositivos', 'Enlace para jugar / anotar',
+    'Nueva partida', 'Jugar en varios dispositivos', 'Enlace para jugar / anotar',
     'Escalera servida', 'Full servido', 'Póker servido', 'Tachar',
 ]
 missing = [item for item in required_html if item not in html]
 assert not missing, f'Missing UI markers: {missing}'
 
 required_js = [
-    'generalamo.state.v2', 'function normalize', 'function recordScore', 'function scoreRecency',
+    'generalamo.state.v2', 'Ver partida', 'function normalize', 'function recordScore', 'function scoreRecency',
     'mark-last', 'mark-prev', 'mark-old', 'function openHistory', 'function renderActivity',
     'Generala servida', '❌ Tachar', "state.throws===1", "['straight','full','poker']",
     'window.applyRemoteAction', "type==='digital-score'", 'function finishIfNeeded',
