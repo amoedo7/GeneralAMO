@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#06111d">
 <title>GeneralAMO</title>
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="final.css">
 </head>
 <body>
 <main class="shell">
@@ -62,7 +63,7 @@
       <span class="badge">Tocá un dado para retenerlo</span>
     </div>
     <div id="dice" class="dice"></div>
-    <div class="row actionRow"><button id="roll" class="btn primary">Tirar dados</button><button id="skip" class="btn">Pasar turno</button></div>
+    <div class="row actionRow"><button id="roll" class="btn primary">Tirar dados</button><button id="skip" class="btn hidden" aria-hidden="true" tabindex="-1">Pasar turno</button></div>
     <div id="preview" class="preview"></div>
   </article>
 
@@ -86,7 +87,7 @@
   <div class="kicker">REFERENCIA</div><h1 class="pageTitle">Reglas</h1>
   <article class="notice ruleIntro"><b>🎯 Servida</b> significa que Escalera, Full o Póker se completan en la primera tirada del turno (1/3). En ese caso suman 5 puntos adicionales.</article>
   <div class="rules">
-    <article class="card rule"><h3>Turno</h3><p class="muted">Cada jugador dispone de hasta 3 tiradas. Después de cada tirada puede conservar los dados que quiera y volver a lanzar el resto. Al terminar el turno anota una sola categoría.</p></article>
+    <article class="card rule"><h3>Turno</h3><p class="muted">Cada jugador dispone de hasta 3 tiradas. Después de cada tirada puede conservar los dados que quiera y volver a lanzar el resto. El turno termina únicamente al anotar o tachar una categoría libre.</p></article>
     <article class="card rule"><h3>Números</h3><p class="muted">Unos a Seises: se suman solamente los dados del número elegido. Ejemplo: tres seises = 6 + 6 + 6 = 18 puntos.</p></article>
     <article class="card rule"><h3>Escalera</h3><p class="muted">1‑2‑3‑4‑5 o 2‑3‑4‑5‑6. Vale 20 puntos. Si sale en el primer tiro: <b>Escalera servida = 25</b>.</p></article>
     <article class="card rule"><h3>Full</h3><p class="muted">Tres dados iguales y dos iguales de otro valor. Vale 30 puntos. Si sale en el primer tiro: <b>Full servido = 35</b>.</p></article>
