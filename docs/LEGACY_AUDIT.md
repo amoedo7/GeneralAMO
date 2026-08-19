@@ -49,8 +49,8 @@ Problemas a corregir:
 La app vieja `GeneralaAMO 0.7.0-beta` puede convivir temporalmente con la nueva.
 
 ```text
-Legacy: GeneralAlaAMO / com.desarrollamo.generalaamo
-Nueva:  GeneralAMO     / com.desarrollamo.generalamo
+Legacy: GeneralaAMO / com.desarrollamo.generalaamo
+Nueva:  GeneralAMO  / com.desarrollamo.generalamo
 ```
 
 No se eliminará la legacy del dispositivo hasta que GeneralAMO haya demostrado que puede reemplazarla con seguridad.
