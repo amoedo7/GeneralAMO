@@ -15,6 +15,13 @@ if (!appVersionName || appVersionCode == null) {
     throw new GradleException('VERSION_NAME and VERSION_CODE are required')
 }
 
+def signingStoreFile = System.getenv('GENERALAMO_KEYSTORE_PATH')
+def signingStorePassword = System.getenv('GENERALAMO_STORE_PASSWORD')
+def signingKeyAlias = System.getenv('GENERALAMO_KEY_ALIAS')
+def signingKeyPassword = System.getenv('GENERALAMO_KEY_PASSWORD')
+def releaseSigningRequired = (System.getenv('CI_RELEASE_SIGNING_REQUIRED') ?: 'false').toBoolean()
+def hasReleaseSigning = [signingStoreFile, signingStorePassword, signingKeyAlias, signingKeyPassword].every { it != null && !it.trim().isEmpty() }
+
 android {
     namespace 'com.desarrollamo.generalamo'
     compileSdk 35
@@ -28,11 +35,13 @@ android {
     }
 
     signingConfigs {
-        candidate {
-            storeFile file('../ci/generalamo-candidate.keystore')
-            storePassword 'generalamo'
-            keyAlias 'generalamo'
-            keyPassword 'generalamo'
+        if (hasReleaseSigning) {
+            create('secureRelease') {
+                storeFile file(signingStoreFile)
+                storePassword signingStorePassword
+                keyAlias signingKeyAlias
+                keyPassword signingKeyPassword
+            }
         }
     }
 
@@ -40,7 +49,11 @@ android {
         release {
             minifyEnabled false
             shrinkResources false
-            signingConfig signingConfigs.candidate
+            if (hasReleaseSigning) {
+                signingConfig signingConfigs.secureRelease
+            } else if (releaseSigningRequired) {
+                throw new GradleException('GeneralAMO release signing secrets are required; signing material must never be committed to Git')
+            }
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

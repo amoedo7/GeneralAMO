@@ -11,8 +11,14 @@ GeneralAMO está en desarrollo y todavía no debe tratarse como software verific
 - un viewer no puede mutar el estado;
 - el host es la autoridad final de una partida compartida;
 - mensajes, categorías y puntuaciones recibidos se validan;
-- la firma Android y el package se congelarán antes de la primera Release candidate;
+- la firma Android y el package se congelan antes de distribución estable;
 - StoreAMO debe verificar integridad, application id, firma y versión antes de actualizar.
+
+## Claves de firma
+
+La clave privada de firma nunca se guarda en Git, ni siquiera en Base64. Tampoco se guardan en Gradle contraseñas, aliases sensibles o rutas privadas. CI recibe el material de firma exclusivamente mediante GitHub Actions Secrets y lo materializa sólo durante el job.
+
+Si una clave privada o keystore estuvo alguna vez en un repositorio público debe considerarse comprometida aunque después se borre del último commit. Antes de distribución de producción hay que rotar/migrar esa identidad de firma y conservar únicamente el fingerprint público del certificado para verificación.
 
 ## Red local
 
