@@ -3,85 +3,132 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#06111d">
 <title>GeneralAMO</title>
-<style>
-:root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;--bg:#f2f6fb;--panel:#ffffff;--panel2:#eaf2fb;--panel3:#dfeaf6;--text:#0e2133;--muted:#667c90;--line:#d2dfeb;--cyan:#52cdf1;--pink:#ef6db4;--violet:#6a5bd6;--green:#43c884;--yellow:#f0bf35;--red:#e95d6c;--navy:#0a1a2a;--shadow:0 14px 34px rgba(7,19,31,.09);--glow:0 0 0 1px rgba(82,205,241,.12),0 18px 40px rgba(46,92,136,.12)}html[data-theme=dark]{--bg:#06111d;--panel:#0f2438;--panel2:#17314a;--panel3:#203e59;--text:#f7fbff;--muted:#9db2c5;--line:#294863;--navy:#020a12;--shadow:0 16px 40px rgba(0,0,0,.24);--glow:0 0 0 1px rgba(82,205,241,.10),0 20px 44px rgba(0,0,0,.24)}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 18% -10%,rgba(82,205,241,.10),transparent 30%),radial-gradient(circle at 92% 4%,rgba(239,109,180,.09),transparent 28%),var(--bg);color:var(--text);-webkit-tap-highlight-color:transparent}button,input,select{font:inherit}.shell{max-width:980px;margin:auto;padding:14px 12px 110px}.header{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:62px}.brandWrap{display:flex;align-items:center;gap:10px}.miniDie{width:40px;height:40px;border-radius:13px;background:linear-gradient(135deg,var(--cyan),var(--violet),var(--pink));display:grid;place-items:center;color:#08121c;font-size:23px;box-shadow:var(--shadow)}.brand{font-size:27px;font-weight:950;letter-spacing:-1px}.brand b{color:var(--pink)}.iconBtn,.btn{border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:15px;font-weight:850;min-height:44px}.iconBtn{width:46px;height:46px}.btn{padding:12px 15px}.primary{background:linear-gradient(135deg,var(--cyan),#68d8f5);color:#06111d;border-color:transparent;box-shadow:0 8px 22px rgba(82,205,241,.20)}.danger{color:var(--red)}.hero{margin:12px 0 16px;padding:25px;border-radius:29px;background:linear-gradient(135deg,#126984 0%,#4d54af 50%,#a93f81 100%);color:#fff;box-shadow:var(--shadow);position:relative;overflow:hidden}.hero:after{content:"";position:absolute;width:170px;height:170px;border-radius:50%;background:rgba(255,255,255,.08);right:-50px;top:-70px}.hero h1{font-size:42px;line-height:.98;letter-spacing:-1.8px;margin:5px 0 12px;max-width:620px}.hero p{font-size:16px;line-height:1.55;margin:0;opacity:.93;max-width:650px}.kicker{font-size:11px;font-weight:950;letter-spacing:1.2px;color:var(--cyan);text-transform:uppercase}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.card{background:var(--panel);border:1px solid var(--line);border-radius:23px;padding:18px;box-shadow:var(--shadow)}.mode{cursor:pointer;transition:.18s transform,.18s outline}.mode:active{transform:scale(.985)}.mode.active{outline:3px solid var(--cyan);box-shadow:var(--glow)}.mode strong{display:block;font-size:24px;margin:4px 0}.muted{color:var(--muted)}.setup{display:grid;grid-template-columns:1fr auto;gap:9px}.setup input,select{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--text);padding:13px;border-radius:14px}.players{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.chip{display:flex;align-items:center;gap:7px;background:var(--panel2);padding:8px 8px 8px 12px;border-radius:999px;border:1px solid var(--line)}.chip button{width:29px;height:29px;border:0;border-radius:50%;background:rgba(233,93,108,.13);color:var(--red);font-weight:950}.row{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.row.between{justify-content:space-between}.saved{margin-left:auto;color:var(--green);font-weight:850}.notice{margin:12px 0;padding:13px 15px;border-radius:15px;background:var(--panel2);color:var(--muted);border:1px solid var(--line)}.notice.good{color:var(--green)}.notice.warn{color:#d89920}.gameMeta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}.metaCard{padding:11px 12px;border-radius:17px;background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow)}.metaCard b{display:block;font-size:17px}.metaCard span{font-size:10px;color:var(--muted)}.diceWrap{margin:12px 0}.dice{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}.die{aspect-ratio:1;border:1px solid var(--line);border-radius:20px;background:linear-gradient(145deg,var(--panel),var(--panel2));padding:10px;display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);align-items:center;justify-items:center;box-shadow:var(--shadow);transition:.15s}.die.held{outline:3px solid var(--pink);transform:translateY(-3px);box-shadow:0 10px 24px rgba(239,109,180,.22)}.pip{width:10px;height:10px;border-radius:50%;background:var(--text)}.preview{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}.pick{border:1px solid var(--line);border-radius:15px;background:var(--panel2);color:var(--text);padding:11px;text-align:left;min-height:72px;position:relative}.pick b{display:block;font-size:22px;margin-top:3px}.pick small{display:block;margin-top:2px;color:var(--muted);font-weight:750}.pick:disabled{opacity:.45}.pick.used{opacity:1!important;color:#fff;border-color:transparent}.pick.mark-last{background:linear-gradient(135deg,#a9293f,#d8495b)}.pick.mark-prev{background:linear-gradient(135deg,#b57b13,#e5ae2f);color:#17202a}.pick.mark-old{background:linear-gradient(135deg,#247c54,#38a96e)}.scoreLegend{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0 8px}.legendPill{font-size:10px;font-weight:850;border-radius:999px;padding:7px 10px;background:var(--panel);border:1px solid var(--line)}.legendPill.red{color:var(--red)}.legendPill.yellow{color:#c99513}.legendPill.green{color:var(--green)}.score{overflow:auto;border:1px solid var(--line);border-radius:21px;background:var(--panel);box-shadow:var(--shadow);overscroll-behavior-inline:contain}.score table{border-collapse:separate;border-spacing:0;width:max-content;min-width:100%;table-layout:fixed}.score th,.score td{padding:7px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);text-align:center;min-width:96px;height:60px;background:var(--panel)}.score tr:last-child td{border-bottom:0}.score th:last-child,.score td:last-child{border-right:0}.score th{position:sticky;top:0;background:var(--panel2);z-index:3;font-size:12px}.score th:first-child,.score td:first-child{position:sticky;left:0;min-width:132px;max-width:132px;text-align:left;z-index:4}.score td:first-child{background:var(--panel)}.score th:first-child{background:var(--panel2);z-index:5}.scorePlayer{display:block;max-width:88px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:900}.scoreTotal{display:block;font-size:10px;color:var(--muted);margin-top:3px}.cell{width:82px;min-height:42px;border:1px solid transparent;background:transparent;color:var(--text);text-align:center;font-weight:950;padding:9px 6px;border-radius:11px}.cell:not([readonly]):focus{outline:2px solid var(--cyan);background:var(--panel2)}.cell.filled{color:#fff}.cell.mark-last{background:#bd3349}.cell.mark-prev{background:#d5a320;color:#111820}.cell.mark-old{background:#2e9664}.cell[readonly]{cursor:default}.activity{display:grid;gap:7px}.activity div{padding:10px 12px;border-radius:12px;background:var(--panel2)}.view{display:none}.view.active{display:block}.bottom{position:fixed;left:0;right:0;bottom:0;background:color-mix(in srgb,var(--panel) 94%,transparent);border-top:1px solid var(--line);backdrop-filter:blur(16px);z-index:20}.bottomInner{max-width:980px;margin:auto;display:grid;grid-template-columns:repeat(5,1fr);padding:7px 7px max(7px,env(safe-area-inset-bottom))}.nav{border:0;background:transparent;color:var(--muted);padding:8px 3px;border-radius:15px;font-size:10px;font-weight:800}.nav span{display:block;font-size:20px;margin-bottom:2px}.nav.active{background:var(--panel2);color:var(--text)}.historyCard{margin:9px 0}.historyCard h3{margin:0 0 6px}.rules{display:grid;gap:10px}.rule h3{margin:0 0 6px}.shareBox code{display:block;white-space:normal;word-break:break-all;background:var(--panel2);padding:12px;border-radius:12px;margin:8px 0;color:var(--text)}.shareActions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.badge{display:inline-flex;padding:7px 10px;border-radius:999px;background:var(--panel2);color:var(--cyan);font-weight:850;font-size:11px}.empty{text-align:center;padding:28px;color:var(--muted)}.sectionTitle{margin:0 0 4px;font-size:23px}.progressBar{height:7px;background:var(--panel2);border-radius:999px;overflow:hidden;margin-top:8px}.progressBar i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--violet),var(--pink));border-radius:999px}.scrollHint{font-size:10px;color:var(--muted);margin-left:auto}@media(max-width:700px){.grid{grid-template-columns:1fr}.hero{padding:22px}.hero h1{font-size:37px}.shell{padding-left:10px;padding-right:10px}.preview{grid-template-columns:1fr 1fr}.card{padding:16px}.dice{gap:6px}.die{border-radius:16px;padding:7px}.pip{width:8px;height:8px}.gameMeta{grid-template-columns:repeat(3,1fr)}.score th,.score td{min-width:90px}.score th:first-child,.score td:first-child{min-width:118px;max-width:118px}.cell{width:74px}}@media(max-width:380px){.preview{grid-template-columns:1fr}.hero h1{font-size:34px}.gameMeta{grid-template-columns:1fr 1fr}.gameMeta .metaCard:last-child{grid-column:1/-1}}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 <main class="shell">
-<header class="header"><div class="brandWrap"><div class="miniDie" aria-hidden="true">🎲</div><div class="brand">General<b>AMO</b></div></div><button id="theme" class="iconBtn" aria-label="Cambiar tema">◐</button></header>
+<header class="header">
+  <div class="brandWrap"><div class="miniDie" aria-hidden="true">🎲</div><div class="brand">General<b>AMO</b></div></div>
+  <button id="theme" class="iconBtn" aria-label="Cambiar tema">◐</button>
+</header>
+
 <section id="view-home" class="view active">
-  <div class="hero"><div class="kicker" style="color:#bdefff">DESARROLLAMO · JUEGO LOCAL</div><h1>La mesa, sin papel.</h1><p>Usá dados físicos y sólo anotá, o jugá con dados digitales. La partida queda guardada en tu dispositivo y puede compartirse en la misma red.</p></div>
-  <div class="grid">
-    <article class="card mode active" data-mode="scorekeeper"><div class="kicker">DADOS FÍSICOS</div><strong>Anotar partida</strong><p class="muted">Marcador rápido, semáforo de jugadas, totales e historial.</p><button class="btn primary">Elegir</button></article>
-    <article class="card mode" data-mode="digital"><div class="kicker">DADOS DIGITALES</div><strong>Jugar con dados</strong><p class="muted">Tres tiradas, retené dados y guardá una categoría por turno.</p><button class="btn primary">Elegir</button></article>
+  <div class="hero">
+    <div class="kicker light">DESARROLLAMO · JUEGO LOCAL</div>
+    <h1>La mesa, sin papel.</h1>
+    <p>Jugá con dados físicos o digitales, guardá la partida y compartila con otros dispositivos en la misma Wi‑Fi o hotspot.</p>
   </div>
-  <article class="card" style="margin-top:12px"><h2 class="sectionTitle">Jugadores</h2><p class="muted" style="margin-top:0">Agregá hasta 8. Podés quitar cualquiera antes o durante una partida.</p><div class="setup"><input id="name" maxlength="24" autocomplete="off" placeholder="Nombre"><button id="add" class="btn primary">Agregar</button></div><div id="players" class="players"></div><div class="row"><select id="rules" style="flex:1"><option value="classic">Generala clásica</option><option value="served">Clásica · bonus servida</option></select><button id="start" class="btn primary">Empezar</button></div></article>
+  <div class="grid">
+    <article class="card mode active" data-mode="scorekeeper">
+      <div class="kicker">DADOS FÍSICOS</div><strong>Anotar partida</strong>
+      <p class="muted">Marcador rápido, turnos, semáforo de anotaciones, totales e historial.</p>
+      <button class="btn primary">Elegir</button>
+    </article>
+    <article class="card mode" data-mode="digital">
+      <div class="kicker">DADOS DIGITALES</div><strong>Jugar con dados</strong>
+      <p class="muted">Hasta tres tiradas, dados retenidos, servido y categorías disponibles.</p>
+      <button class="btn primary">Elegir</button>
+    </article>
+  </div>
+  <article class="card setupCard">
+    <h2 class="sectionTitle">Jugadores</h2>
+    <p class="muted top0">Agregá hasta 8. Podés quitar cualquiera antes o durante una partida.</p>
+    <div class="setup"><input id="name" maxlength="24" autocomplete="off" placeholder="Nombre"><button id="add" class="btn primary">Agregar</button></div>
+    <div id="players" class="players"></div>
+    <div class="row">
+      <select id="rules" class="grow">
+        <option value="served">Tradicional · +5 si Escalera, Full o Póker salen en 1/3</option>
+        <option value="classic">Variante sin bonus servido</option>
+      </select>
+      <button id="start" class="btn primary">Empezar</button>
+    </div>
+  </article>
 </section>
+
 <section id="view-game" class="view">
-  <div class="row between"><div><div class="kicker">PARTIDA ACTUAL</div><h1 id="gameTitle" style="margin:3px 0"></h1></div><span id="state" class="saved">Guardado</span></div>
+  <div class="row between">
+    <div><div class="kicker">PARTIDA ACTUAL</div><h1 id="gameTitle" class="pageTitle compact"></h1></div>
+    <span id="state" class="saved">Guardado</span>
+  </div>
   <div id="gameMeta" class="gameMeta"></div>
-  <div id="gameNotice" class="notice good" style="display:none"></div>
-  <article id="digitalPanel" class="card diceWrap" style="display:none"><div class="row between"><div><h2 id="turn" style="margin:0"></h2><span id="throws" class="muted"></span></div><span class="badge">Tocá un dado para retenerlo</span></div><div id="dice" class="dice" style="margin-top:14px"></div><div class="row" style="margin-top:12px"><button id="roll" class="btn primary">Tirar dados</button><button id="skip" class="btn">Pasar turno</button></div><div id="preview" class="preview"></div></article>
-  <div class="row" style="margin:12px 0"><button id="undo" class="btn">Deshacer</button><button id="newGame" class="btn">Nueva partida</button><button id="shareQuick" class="btn">Compartir Wi‑Fi</button></div>
-  <div class="scoreLegend"><span class="legendPill red">● Última</span><span class="legendPill yellow">● Anteúltima</span><span class="legendPill green">● Anteriores</span><span class="scrollHint">Deslizá la tabla si hay muchos jugadores ↔</span></div>
+  <div id="gameNotice" class="notice good hidden"></div>
+  <article id="gameResult" class="resultCard hidden"></article>
+
+  <article id="digitalPanel" class="card diceWrap hidden">
+    <div class="row between">
+      <div><h2 id="turn" class="top0 bottom0"></h2><span id="throws" class="muted"></span></div>
+      <span class="badge">Tocá un dado para retenerlo</span>
+    </div>
+    <div id="dice" class="dice"></div>
+    <div class="row actionRow"><button id="roll" class="btn primary">Tirar dados</button><button id="skip" class="btn">Pasar turno</button></div>
+    <div id="preview" class="preview"></div>
+  </article>
+
+  <div class="row gameActions"><button id="undo" class="btn">↩ Deshacer</button><button id="newGame" class="btn">Nueva partida</button><button id="shareQuick" class="btn">Compartir Wi‑Fi</button></div>
+  <div class="scoreLegend"><span class="legendPill red">● Última</span><span class="legendPill yellow">● Anteúltima</span><span class="legendPill green">● Anteriores</span><span class="scrollHint">Deslizá ↔</span></div>
   <div class="score"><table id="table"></table></div>
-  <article class="card" style="margin-top:12px"><h2 class="sectionTitle">Actividad</h2><div id="activity" class="activity"></div></article>
+
+  <article class="card activityCard">
+    <div class="row between"><div><div class="kicker">CRONOLOGÍA</div><h2 class="sectionTitle">Actividad</h2></div><span class="muted small">Qué pasó y quién sigue</span></div>
+    <div id="activity" class="activity"></div>
+  </article>
 </section>
-<section id="view-history" class="view"><div class="kicker">PARTIDAS</div><h1>Historial</h1><p class="muted">Las partidas que reemplazás se guardan acá y pueden restaurarse.</p><div id="historyList"></div></section>
-<section id="view-rules" class="view"><div class="kicker">REFERENCIA RÁPIDA</div><h1>Reglas</h1><div class="rules"><article class="card rule"><h3>Números</h3><p class="muted">Se suman solamente los dados del número elegido. Ejemplo: tres seises = 18.</p></article><article class="card rule"><h3>Escalera</h3><p class="muted">1‑2‑3‑4‑5 o 2‑3‑4‑5‑6. Vale 20; con bonus servida, 25.</p></article><article class="card rule"><h3>Full</h3><p class="muted">Tres dados iguales y dos de otro valor. Vale 30; servida, 35.</p></article><article class="card rule"><h3>Póker</h3><p class="muted">Cuatro o cinco dados iguales. Vale 40; servida, 45.</p></article><article class="card rule"><h3>Generala</h3><p class="muted">Cinco dados iguales. Vale 50. Doble generala vale 100 en este preset.</p></article></div></section>
-<section id="view-share" class="view"><div class="kicker">MISMA WI‑FI / HOTSPOT</div><h1>Compartir partida</h1><p class="muted">El teléfono que creó la mesa sigue siendo la fuente principal. Podés dar un enlace sólo para mirar y otro distinto para editar puntos.</p><article class="card shareBox"><button id="startShare" class="btn primary" style="width:100%">Iniciar acceso Wi‑Fi</button><div id="shareStatus" class="notice">Todavía no hay acceso local activo.</div><div id="shareLinks" style="display:none"><h3>👀 Enlace para ver</h3><code id="viewerUrl"></code><div class="shareActions"><button class="btn" id="copyViewer">Copiar</button><button class="btn" id="sendViewer">Compartir</button></div><h3>✏️ Enlace para editar</h3><code id="editorUrl"></code><div class="shareActions"><button class="btn" id="copyEditor">Copiar</button><button class="btn" id="sendEditor">Compartir</button></div><p class="muted">Compartí el enlace de edición solamente con quienes puedan anotar. Todos deben estar conectados a la misma Wi‑Fi o hotspot.</p><button class="btn danger" id="stopShare">Detener acceso local</button></div></article></section>
+
+<section id="view-history" class="view">
+  <div class="kicker">PARTIDAS</div><h1 class="pageTitle">Historial</h1>
+  <p class="muted">Revisá resultados anteriores sin reemplazar la partida actual. Restaurar sigue disponible cuando quieras retomarla.</p>
+  <div id="historyList"></div>
+</section>
+
+<section id="view-rules" class="view">
+  <div class="kicker">REFERENCIA</div><h1 class="pageTitle">Reglas</h1>
+  <article class="notice ruleIntro"><b>🎯 Servida</b> significa que Escalera, Full o Póker se completan en la primera tirada del turno (1/3). En ese caso suman 5 puntos adicionales.</article>
+  <div class="rules">
+    <article class="card rule"><h3>Turno</h3><p class="muted">Cada jugador dispone de hasta 3 tiradas. Después de cada tirada puede conservar los dados que quiera y volver a lanzar el resto. Al terminar el turno anota una sola categoría.</p></article>
+    <article class="card rule"><h3>Números</h3><p class="muted">Unos a Seises: se suman solamente los dados del número elegido. Ejemplo: tres seises = 6 + 6 + 6 = 18 puntos.</p></article>
+    <article class="card rule"><h3>Escalera</h3><p class="muted">1‑2‑3‑4‑5 o 2‑3‑4‑5‑6. Vale 20 puntos. Si sale en el primer tiro: <b>Escalera servida = 25</b>.</p></article>
+    <article class="card rule"><h3>Full</h3><p class="muted">Tres dados iguales y dos iguales de otro valor. Vale 30 puntos. Si sale en el primer tiro: <b>Full servido = 35</b>.</p></article>
+    <article class="card rule"><h3>Póker</h3><p class="muted">Cuatro dados iguales. Vale 40 puntos. Si sale en el primer tiro: <b>Póker servido = 45</b>.</p></article>
+    <article class="card rule"><h3>Generala</h3><p class="muted">Cinco dados iguales. Vale 50 puntos. En esta modalidad, una <b>Generala servida</b> —cinco iguales en el primer tiro— gana la partida inmediatamente.</p></article>
+    <article class="card rule"><h3>Doble generala</h3><p class="muted">Después de haber anotado una Generala, una nueva tirada con cinco dados iguales puede anotarse como Doble generala y vale 100 puntos.</p></article>
+    <article class="card rule"><h3>❌ Tachar</h3><p class="muted">Cada categoría puede usarse una sola vez. Si no querés o no podés puntuar en una categoría libre, podés tacharla: queda usada y suma 0 puntos.</p></article>
+  </div>
+</section>
+
+<section id="view-share" class="view">
+  <div class="kicker">MISMA WI‑FI / HOTSPOT</div><h1 class="pageTitle">Jugar en varios dispositivos</h1>
+  <p class="muted">El teléfono que creó la mesa conserva la partida. Los demás abren un enlace en el navegador y reciben los cambios en vivo. El enlace de juego permite tirar, retener, anotar o tachar durante el turno; el enlace de sólo lectura no modifica nada.</p>
+  <article class="card shareBox">
+    <button id="startShare" class="btn primary full">Iniciar acceso Wi‑Fi</button>
+    <div id="shareStatus" class="notice">Todavía no hay acceso local activo.</div>
+    <div id="shareLinks" class="hidden">
+      <h3>👀 Enlace para ver</h3><code id="viewerUrl"></code>
+      <div class="shareActions"><button class="btn" id="copyViewer">Copiar</button><button class="btn" id="sendViewer">Compartir</button></div>
+      <h3>🎲 Enlace para jugar / anotar</h3><code id="editorUrl"></code>
+      <div class="shareActions"><button class="btn" id="copyEditor">Copiar</button><button class="btn" id="sendEditor">Compartir</button></div>
+      <p class="muted">Compartí el enlace de juego solamente con la mesa. Todos deben estar conectados a la misma Wi‑Fi o hotspot.</p>
+      <button class="btn danger" id="stopShare">Detener acceso local</button>
+    </div>
+  </article>
+</section>
 </main>
-<nav class="bottom"><div class="bottomInner"><button class="nav active" data-view="home"><span>⌂</span>Inicio</button><button class="nav" data-view="game"><span>🎯</span>Partida</button><button class="nav" data-view="history"><span>◷</span>Historial</button><button class="nav" data-view="rules"><span>▤</span>Reglas</button><button class="nav" data-view="share"><span>⌁</span>Compartir</button></div></nav>
-<script>
-const C=[['1','Unos'],['2','Doses'],['3','Treses'],['4','Cuatros'],['5','Cincos'],['6','Seises'],['straight','Escalera'],['full','Full'],['poker','Póker'],['generala','Generala'],['double','Doble generala']];
-const K='generalamo.state.v2',OLD='generalamo.v0.1',HK='generalamo.history.v1',THEME='generalamo.theme';
-const $=id=>document.getElementById(id);let selectedMode='scorekeeper',activeView='home',shareInfo=null;
-function fresh(players=[]){const id=Date.now();const ps=players.map((p,i)=>({id:p.id||('p'+id+i),name:p.name||String(p)}));const scores={};ps.forEach(p=>scores[p.id]={});return{schema:2,title:'Partida '+new Date().toLocaleDateString(),mode:selectedMode,players:ps,scores,events:[],turn:0,dice:[1,1,1,1,1],held:[false,false,false,false,false],throws:0,rule:'classic',startedAt:Date.now()}}
-function normalize(s){if(!s||typeof s!=='object')return fresh();s.schema=2;s.players=Array.isArray(s.players)?s.players:[];s.scores=s.scores||{};s.events=Array.isArray(s.events)?s.events:[];s.turn=Math.max(0,Math.min(Number(s.turn)||0,Math.max(0,s.players.length-1)));s.dice=Array.isArray(s.dice)&&s.dice.length===5?s.dice:[1,1,1,1,1];s.held=Array.isArray(s.held)&&s.held.length===5?s.held:[false,false,false,false,false];s.throws=Math.max(0,Math.min(3,Number(s.throws)||0));s.rule=s.rule||'classic';s.title=s.title||'Partida';s.players.forEach(p=>{if(!s.scores[p.id])s.scores[p.id]={}});return s}
-function load(){for(const key of [K,OLD]){try{const raw=localStorage.getItem(key);if(raw){const state=normalize(JSON.parse(raw));if(key===OLD)localStorage.setItem(K,JSON.stringify(state));return state}}catch{}}return fresh()}
-let g=load();
-function histories(){try{return JSON.parse(localStorage.getItem(HK)||'[]')}catch{return[]}}
-function saveHistory(list){localStorage.setItem(HK,JSON.stringify(list.slice(0,20)))}
-function safe(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-function event(text,data={}){g.events.push({t:Date.now(),text,...data});g.events=g.events.slice(-160)}
-function save(){g=normalize(g);localStorage.setItem(K,JSON.stringify(g));$('state').textContent='Guardado';if(window.GeneralAMONative&&shareInfo)try{GeneralAMONative.updateSharedState(JSON.stringify(g))}catch{}}
-function total(pid){return C.reduce((sum,[cat])=>sum+(Number(g.scores[pid]?.[cat])||0),0)}
-function hasScores(){return g.players.some(p=>Object.keys(g.scores[p.id]||{}).length)}
-function filledCount(){return g.players.reduce((n,p)=>n+Object.keys(g.scores[p.id]||{}).length,0)}
-function showNotice(text){const n=$('gameNotice');n.textContent=text;n.style.display='block';clearTimeout(showNotice.t);showNotice.t=setTimeout(()=>n.style.display='none',2600)}
-function archiveCurrent(){if(!g.players.length||!hasScores())return;const copy=JSON.parse(JSON.stringify(g));copy.endedAt=Date.now();copy.totals=Object.fromEntries(copy.players.map(p=>[p.id,total(p.id)]));const list=histories();list.unshift(copy);saveHistory(list)}
-function renderPlayers(){if(!g.players.length){$('players').innerHTML='<span class="muted">Agregá entre 1 y 8 jugadores.</span>';return}$('players').innerHTML=g.players.map(p=>`<span class="chip">${safe(p.name)} <button data-remove="${p.id}" aria-label="Eliminar ${safe(p.name)}">×</button></span>`).join('');document.querySelectorAll('[data-remove]').forEach(b=>b.onclick=e=>{e.stopPropagation();removePlayer(b.dataset.remove)})}
-function addPlayer(){const n=$('name').value.trim();if(!n||g.players.length>=8)return;const id='p'+Date.now()+Math.floor(Math.random()*99);g.players.push({id,name:n});g.scores[id]={};$('name').value='';event('Jugador agregado',{type:'player-add',pid:id});save();renderPlayers()}
-function removePlayer(pid){const p=g.players.find(x=>x.id===pid);if(!p)return;const used=Object.keys(g.scores[pid]||{}).length;if(used&&!confirm(`¿Eliminar a ${p.name} y sus ${used} anotaciones?`))return;g.players=g.players.filter(x=>x.id!==pid);delete g.scores[pid];if(g.turn>=g.players.length)g.turn=Math.max(0,g.players.length-1);event('Jugador eliminado',{type:'player-remove',pid});save();renderPlayers();if(activeView==='game')renderGame()}
-function counts(){const c=[0,0,0,0,0,0,0];g.dice.forEach(v=>c[v]++);return c}
-function diceScore(cat){const c=counts(),unique=[...new Set(g.dice)].sort().join(''),groups=c.filter(Boolean).sort((a,b)=>a-b),served=g.rule==='served'&&g.throws===1;let v=0;if(/^[1-6]$/.test(cat))v=c[+cat]*(+cat);else if(cat==='straight')v=(unique==='12345'||unique==='23456')?20:0;else if(cat==='full')v=groups.join(',')==='2,3'?30:0;else if(cat==='poker')v=groups.some(n=>n>=4)?40:0;else if(cat==='generala')v=groups.includes(5)?50:0;else if(cat==='double')v=groups.includes(5)?100:0;if(served&&['straight','full','poker'].includes(cat)&&v)v+=5;return v}
-function recordScore(pid,cat,value,source='local'){const prev=Object.prototype.hasOwnProperty.call(g.scores[pid]||{},cat)?g.scores[pid][cat]:null;if(!g.scores[pid])g.scores[pid]={};if(value===null||value==='')delete g.scores[pid][cat];else g.scores[pid][cat]=Math.max(0,Math.min(999,Number(value)||0));event(source==='remote'?'Puntaje actualizado desde Wi‑Fi':'Puntaje actualizado',{type:'score',pid,cat,prev,next:g.scores[pid][cat]??null,source});save()}
-function nextTurn(){if(!g.players.length)return;g.turn=(g.turn+1)%g.players.length;g.dice=[1,1,1,1,1];g.held=[false,false,false,false,false];g.throws=0;save()}
-function commitDigital(cat){const p=g.players[g.turn];if(!p||Object.prototype.hasOwnProperty.call(g.scores[p.id]||{},cat))return;const value=diceScore(cat);recordScore(p.id,cat,value);const who=p.name;nextTurn();renderGame();showNotice(`${who}: ${C.find(x=>x[0]===cat)[1]} = ${value} · turno de ${g.players[g.turn]?.name||'—'}`)}
-function scoreRecency(pid){const current=g.scores[pid]||{},seen=new Set(),rank=[];for(let i=g.events.length-1;i>=0;i--){const e=g.events[i];if(e.type!=='score'||e.pid!==pid||!Object.prototype.hasOwnProperty.call(current,e.cat)||seen.has(e.cat))continue;seen.add(e.cat);rank.push(e.cat)}return rank}
-function recencyClass(pid,cat){if(!Object.prototype.hasOwnProperty.call(g.scores[pid]||{},cat))return'';const rank=scoreRecency(pid),i=rank.indexOf(cat);if(i===0)return'mark-last';if(i===1)return'mark-prev';return'mark-old'}
-function pipPositions(v){return{1:[5],2:[1,9],3:[1,5,9],4:[1,3,7,9],5:[1,3,5,7,9],6:[1,3,4,6,7,9]}[v]||[]}
-function dieHtml(v,i){const set=new Set(pipPositions(v));let cells='';for(let p=1;p<=9;p++)cells+=set.has(p)?'<i class="pip"></i>':'<i></i>';return `<button class="die ${g.held[i]?'held':''}" data-die="${i}" aria-label="Dado ${i+1}: ${v}">${cells}</button>`}
-function renderDice(){const p=g.players[g.turn];$('turn').textContent=p?`Turno: ${p.name}`:'Sin jugadores';$('throws').textContent=`${g.throws} / 3 tiradas`;$('dice').innerHTML=g.dice.map(dieHtml).join('');document.querySelectorAll('[data-die]').forEach(b=>b.onclick=()=>{if(!g.throws)return;const i=Number(b.dataset.die);g.held[i]=!g.held[i];save();renderDice()});$('preview').innerHTML=C.map(([cat,label])=>{const used=p&&Object.prototype.hasOwnProperty.call(g.scores[p.id]||{},cat),stored=used?g.scores[p.id][cat]:null,cls=used?`used ${recencyClass(p.id,cat)}`:'';const value=used?stored:(g.throws?diceScore(cat):'—');const sub=used?'Ya anotado':(g.throws?'Puntaje posible':'Tirá los dados');return `<button class="pick ${cls}" data-pick="${cat}" ${!g.throws||used?'disabled':''}><span>${label}</span><b>${value}</b><small>${sub}</small></button>`}).join('');document.querySelectorAll('[data-pick]').forEach(b=>b.onclick=()=>commitDigital(b.dataset.pick))}
-function renderTable(){let h='<tr><th>Categoría</th>'+g.players.map(p=>`<th><span class="scorePlayer">${safe(p.name)}</span><span class="scoreTotal">${total(p.id)} pts</span></th>`).join('')+'</tr>';for(const[cat,label]of C){h+=`<tr><td>${label}</td>`+g.players.map(p=>{const used=Object.prototype.hasOwnProperty.call(g.scores[p.id]||{},cat),val=used?g.scores[p.id][cat]:'',cls=used?`filled ${recencyClass(p.id,cat)}`:'';return `<td><input class="cell ${cls}" ${g.mode==='digital'?'readonly':''} data-p="${p.id}" data-c="${cat}" inputmode="numeric" value="${val}" placeholder="—" aria-label="${safe(label)} de ${safe(p.name)}"></td>`}).join('')+'</tr>'}h+='<tr><td><b>TOTAL</b></td>'+g.players.map(p=>`<td><b>${total(p.id)}</b></td>`).join('')+'</tr>';$('table').innerHTML=h;$('table').style.minWidth=(132+Math.max(1,g.players.length)*96)+'px';if(g.mode==='scorekeeper')document.querySelectorAll('.cell').forEach(i=>i.onchange=()=>{recordScore(i.dataset.p,i.dataset.c,i.value);renderGame()})}
-function renderMeta(){const totalSlots=Math.max(1,g.players.length*C.length),filled=filledCount(),pct=Math.round(filled/totalSlots*100),current=g.players[g.turn]?.name||'—';$('gameMeta').innerHTML=`<div class="metaCard"><span>JUGADORES</span><b>${g.players.length}</b></div><div class="metaCard"><span>PROGRESO</span><b>${filled}/${totalSlots}</b><div class="progressBar"><i style="width:${pct}%"></i></div></div><div class="metaCard"><span>TURNO</span><b>${safe(current)}</b></div>`}
-function renderActivity(){$('activity').innerHTML=g.events.length?g.events.slice(-6).reverse().map(e=>`<div><b>${new Date(e.t).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</b> · ${safe(e.text)}</div>`).join(''):'<div class="muted">Sin movimientos todavía.</div>'}
-function renderGame(){$('gameTitle').textContent=g.title;$('digitalPanel').style.display=g.mode==='digital'?'block':'none';renderMeta();renderTable();if(g.mode==='digital')renderDice();renderActivity()}
-function renderHistory(){const list=histories();$('historyList').innerHTML=list.length?list.map((x,i)=>{const winners=x.players.map(p=>({name:p.name,total:x.totals?.[p.id]??C.reduce((s,[c])=>s+(Number(x.scores?.[p.id]?.[c])||0),0)})).sort((a,b)=>b.total-a.total);return `<article class="card historyCard"><div class="kicker">${new Date(x.endedAt||x.startedAt).toLocaleString()}</div><h3>${safe(x.title||('Partida '+(i+1)))}</h3><p>${winners.map((w,j)=>`${j===0?'🏆 ':''}${safe(w.name)}: ${w.total}`).join(' · ')}</p><button class="btn" data-restore="${i}">Restaurar como partida actual</button></article>`}).join(''):'<div class="card empty">Todavía no hay partidas archivadas.</div>';document.querySelectorAll('[data-restore]').forEach(b=>b.onclick=()=>{const x=histories()[Number(b.dataset.restore)];if(!x)return;if(hasScores()&&!confirm('La partida actual se archivará antes de restaurar.'))return;archiveCurrent();g=normalize(JSON.parse(JSON.stringify(x)));g.endedAt=undefined;save();renderPlayers();renderGame();navigate('game')})}
-function navigate(view){activeView=view;document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id==='view-'+view));document.querySelectorAll('.nav').forEach(n=>n.classList.toggle('active',n.dataset.view===view));if(view==='game')renderGame();if(view==='history')renderHistory();if(view==='share')renderShare()}
-function newGame(){if(hasScores()&&!confirm('¿Archivar esta partida y empezar una nueva?'))return;archiveCurrent();const keep=g.players.map(p=>({id:p.id,name:p.name}));g=fresh(keep);g.mode=selectedMode;save();renderPlayers();navigate('home')}
-function startGame(){if(!g.players.length){alert('Agregá al menos un jugador.');return}g.mode=selectedMode;g.rule=$('rules').value;event('Partida iniciada');save();renderGame();navigate('game')}
-function roll(){if(g.throws>=3||!g.players.length)return;g.dice=g.dice.map((v,i)=>g.held[i]?v:Math.floor(Math.random()*6)+1);g.throws++;event('Tirada de dados');save();renderGame()}
-function undo(){for(let i=g.events.length-1;i>=0;i--){const e=g.events[i];if(e.type==='score'){if(e.prev===null||e.prev===undefined)delete g.scores[e.pid][e.cat];else g.scores[e.pid][e.cat]=e.prev;g.events.splice(i,1);save();renderGame();showNotice('Última anotación deshecha');return}}showNotice('No hay una anotación para deshacer')}
-function renderShare(){if(shareInfo){$('shareLinks').style.display='block';$('viewerUrl').textContent=shareInfo.viewerUrl;$('editorUrl').textContent=shareInfo.editorUrl;$('shareStatus').textContent='Acceso local activo · la partida se actualiza automáticamente.';$('shareStatus').className='notice good'}}
-function startShare(){if(!window.GeneralAMONative){$('shareStatus').textContent='El acceso Wi‑Fi está disponible en la app Android instalada desde StoreAMO.';return}try{const r=JSON.parse(GeneralAMONative.startSharing(JSON.stringify(g)));if(!r.ok)throw new Error(r.error||'No se pudo iniciar');shareInfo=r;renderShare()}catch(e){$('shareStatus').textContent='No se pudo iniciar el acceso local: '+e.message;$('shareStatus').className='notice warn'}}
-function stopShare(){if(window.GeneralAMONative)try{GeneralAMONative.stopSharing()}catch{}shareInfo=null;$('shareLinks').style.display='none';$('shareStatus').textContent='Acceso local detenido.';$('shareStatus').className='notice'}
-function nativeCopy(text){if(window.GeneralAMONative)GeneralAMONative.copyText(text);else navigator.clipboard?.writeText(text)}function nativeShare(text){if(window.GeneralAMONative)GeneralAMONative.shareText(text);else nativeCopy(text)}
-window.applyRemoteScore=function(pid,cat,value){recordScore(pid,cat,value===null?null:Number(value),'remote');renderGame();showNotice('Puntaje recibido desde el enlace de edición')};
-document.querySelectorAll('.mode').forEach(m=>m.onclick=()=>{selectedMode=m.dataset.mode;document.querySelectorAll('.mode').forEach(x=>x.classList.toggle('active',x===m))});document.querySelectorAll('.nav').forEach(n=>n.onclick=()=>navigate(n.dataset.view));$('add').onclick=addPlayer;$('name').onkeydown=e=>{if(e.key==='Enter')addPlayer()};$('start').onclick=startGame;$('roll').onclick=roll;$('skip').onclick=()=>{nextTurn();renderGame();showNotice('Turno siguiente')};$('undo').onclick=undo;$('newGame').onclick=newGame;$('shareQuick').onclick=()=>navigate('share');$('startShare').onclick=startShare;$('stopShare').onclick=stopShare;$('copyViewer').onclick=()=>nativeCopy(shareInfo?.viewerUrl||'');$('copyEditor').onclick=()=>nativeCopy(shareInfo?.editorUrl||'');$('sendViewer').onclick=()=>nativeShare('GeneralAMO · ver partida\n'+(shareInfo?.viewerUrl||''));$('sendEditor').onclick=()=>nativeShare('GeneralAMO · editar partida\n'+(shareInfo?.editorUrl||''));
-function applyTheme(value){document.documentElement.dataset.theme=value==='dark'?'dark':'';localStorage.setItem(THEME,value)}const savedTheme=localStorage.getItem(THEME);applyTheme(savedTheme||((window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light'));$('theme').onclick=()=>applyTheme(document.documentElement.dataset.theme==='dark'?'light':'dark');renderPlayers();$('rules').value=g.rule||'classic';selectedMode=g.mode||'scorekeeper';document.querySelectorAll('.mode').forEach(m=>m.classList.toggle('active',m.dataset.mode===selectedMode));if(g.players.length&&hasScores()){renderGame();navigate('game')}
-</script>
+
+<div id="historyOverlay" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="historyTitle">
+  <div class="overlayCard">
+    <div class="row between"><div><div class="kicker">PARTIDA ARCHIVADA</div><h2 id="historyTitle" class="sectionTitle"></h2></div><button id="closeHistory" class="iconBtn" aria-label="Cerrar">×</button></div>
+    <div id="historySummary"></div>
+  </div>
+</div>
+
+<nav class="bottom"><div class="bottomInner">
+  <button class="nav active" data-view="home"><span>⌂</span>Inicio</button>
+  <button class="nav" data-view="game"><span>🎯</span>Partida</button>
+  <button class="nav" data-view="history"><span>◷</span>Historial</button>
+  <button class="nav" data-view="rules"><span>▤</span>Reglas</button>
+  <button class="nav" data-view="share"><span>⌁</span>Compartir</button>
+</div></nav>
+<script src="app.js"></script>
 </body>
 </html>

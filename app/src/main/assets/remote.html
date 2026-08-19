@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>GeneralAMO · Mesa</title>
+<style>
+:root{font-family:Inter,system-ui,-apple-system,sans-serif;--bg:#06111d;--panel:#0f2438;--panel2:#17314a;--text:#f7fbff;--muted:#9db2c5;--line:#294863;--cyan:#52cdf1;--pink:#ef6db4;--green:#43c884;--red:#e95d6c}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% -10%,rgba(82,205,241,.12),transparent 32%),var(--bg);color:var(--text)}main{max-width:920px;margin:auto;padding:18px 12px 42px}.hero,.card{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:17px;margin:10px 0}.hero{background:linear-gradient(135deg,#126984,#4d54af,#9c427d)}h1,h2,h3{margin-top:0}.muted{color:var(--muted)}.pill{display:inline-block;padding:7px 10px;border-radius:999px;background:rgba(6,17,29,.3);font-size:11px;font-weight:850}.row{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.between{justify-content:space-between}.btn{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:13px;min-height:44px;padding:10px 13px;font-weight:850}.btn.primary{background:var(--cyan);color:#06111d;border-color:transparent}.btn:disabled{opacity:.42}.dice{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:12px 0}.die{aspect-ratio:1;border:1px solid var(--line);border-radius:18px;background:var(--panel2);color:#fff;font-size:30px;font-weight:900}.die.held{outline:3px solid var(--pink);transform:translateY(-2px)}.cats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.cat{border:1px solid var(--line);border-radius:14px;background:var(--panel2);color:var(--text);padding:10px;text-align:left;min-height:66px}.cat b{display:block;font-size:19px}.cat small{color:var(--muted)}.cat.zero b{color:var(--red);font-size:15px}.score{overflow:auto;border:1px solid var(--line);border-radius:18px}.score table{border-collapse:separate;border-spacing:0;min-width:650px;width:100%}th,td{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:9px;text-align:center}th:first-child,td:first-child{position:sticky;left:0;background:var(--panel);text-align:left}th{background:var(--panel2)}input{width:70px;background:#07131f;border:1px solid #355c77;border-radius:9px;padding:8px;color:#fff;text-align:center}.activity{display:grid;gap:7px}.event{padding:9px 11px;border-radius:12px;background:var(--panel2)}.good{color:var(--green)}.warn{color:#f4c24c}.result{padding:15px;border-radius:18px;background:linear-gradient(135deg,rgba(82,205,241,.16),rgba(239,109,180,.22));border:1px solid rgba(130,143,255,.35)}.hidden{display:none!important}@media(max-width:560px){.cats{grid-template-columns:1fr}.hero h1{font-size:29px}.die{font-size:25px}}
+</style>
+</head>
+<body>
+<main>
+<section class="hero">
+  <span class="pill">MISMA WI‑FI / HOTSPOT</span>
+  <h1>🎲 GeneralAMO</h1>
+  <p id="modeText">Cargando mesa…</p>
+</section>
+<div id="status" class="card muted">Conectando…</div>
+<section id="result" class="result hidden"></section>
+<section id="play" class="card hidden">
+  <div class="row between"><div><h2 id="turn">Turno</h2><div id="throws" class="muted"></div></div><span id="permission" class="pill"></span></div>
+  <div id="dice" class="dice"></div>
+  <div class="row"><button id="roll" class="btn primary">Tirar dados</button><button id="skip" class="btn">Pasar turno</button></div>
+  <div id="cats" class="cats"></div>
+</section>
+<section class="card">
+  <div class="row between"><h2>Planilla</h2><span id="sync" class="good">● en vivo</span></div>
+  <div class="score"><table id="table"></table></div>
+</section>
+<section class="card"><h2>Actividad</h2><div id="activity" class="activity"></div></section>
+</main>
+<script>
+const EDIT=__EDITOR__,CODE='__CODE__',TOKEN='__TOKEN__';
+const C=[['1','Unos'],['2','Doses'],['3','Treses'],['4','Cuatros'],['5','Cincos'],['6','Seises'],['straight','Escalera'],['full','Full'],['poker','Póker'],['generala','Generala'],['double','Doble generala']];
+let state=null,last='',busy=false;
+const $=id=>document.getElementById(id);
+const safe=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+function total(s,pid){return C.reduce((n,[c])=>n+(Number(s.scores?.[pid]?.[c])||0),0)}
+function counts(s){const c=[0,0,0,0,0,0,0];(s.dice||[]).forEach(v=>c[v]++);return c}
+function baseScore(s,cat){const c=counts(s),u=[...new Set(s.dice||[])].sort().join(''),g=c.filter(Boolean).sort((a,b)=>a-b);if(/^[1-6]$/.test(cat))return c[+cat]*(+cat);if(cat==='straight')return(u==='12345'||u==='23456')?20:0;if(cat==='full')return g.join(',')==='2,3'?30:0;if(cat==='poker')return g.some(n=>n>=4)?40:0;if(cat==='generala')return g.includes(5)?50:0;if(cat==='double')return g.includes(5)?100:0;return 0}
+function served(s,cat){return s.rule==='served'&&Number(s.throws)===1&&['straight','full','poker'].includes(cat)&&baseScore(s,cat)>0}
+function score(s,cat){return baseScore(s,cat)+(served(s,cat)?5:0)}
+function complete(s){return s.players?.length&&s.players.every(p=>Object.keys(s.scores?.[p.id]||{}).length>=C.length)}
+function outcome(s){if(s.instantWinnerId){const p=s.players?.find(x=>x.id===s.instantWinnerId);return p?`🏆 ${p.name} ganó con Generala servida`:'Partida finalizada'}if(!s.finishedAt&&!complete(s))return'';const rank=(s.players||[]).map(p=>({name:p.name,total:total(s,p.id)})).sort((a,b)=>b.total-a.total);if(!rank.length)return'Partida finalizada';const top=rank[0].total,w=rank.filter(x=>x.total===top);return w.length===1?`🏆 ${w[0].name} ganó con ${top} puntos`:`🤝 Empate: ${w.map(x=>x.name).join(' · ')} (${top})`}
+async function action(payload){if(!EDIT||busy)return;busy=true;try{const r=await fetch('/api/action?token='+encodeURIComponent(TOKEN),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});if(!r.ok)throw new Error('HTTP '+r.status);await new Promise(r=>setTimeout(r,120));last='';await load()}catch(e){$('status').textContent='No pude enviar la jugada: '+e.message;$('status').className='card warn'}finally{busy=false}}
+function dieFace(v){return['','⚀','⚁','⚂','⚃','⚄','⚅'][Number(v)||1]}
+function render(s){
+  state=s;const p=s.players?.[Number(s.turn)||0];const o=outcome(s);
+  $('modeText').textContent=EDIT?'Podés jugar y anotar desde este dispositivo. Los cambios aparecen en toda la mesa.':'Vista en vivo. Este enlace no puede cambiar la partida.';
+  $('status').textContent=(s.title||'Partida')+' · '+(p&&!s.finishedAt?'turno de '+p.name:s.finishedAt?'finalizada':'sin jugadores');
+  $('status').className='card muted';
+  $('permission').textContent=EDIT?'Edición habilitada':'Sólo lectura';
+  if(o){$('result').classList.remove('hidden');$('result').innerHTML='<h2>🎉 Partida finalizada</h2><b>'+safe(o)+'</b>'}else $('result').classList.add('hidden');
+  const digital=s.mode==='digital';$('play').classList.toggle('hidden',!digital);
+  if(digital){
+    $('turn').textContent=p?'Turno: '+p.name:'Sin jugadores';$('throws').textContent=(s.throws||0)+' / 3 tiradas';
+    $('dice').innerHTML=(s.dice||[1,1,1,1,1]).map((v,i)=>`<button class="die ${s.held?.[i]?'held':''}" data-hold="${i}" ${!EDIT||!s.throws||s.finishedAt?'disabled':''}>${dieFace(v)}</button>`).join('');
+    document.querySelectorAll('[data-hold]').forEach(b=>b.onclick=()=>action({type:'hold',index:Number(b.dataset.hold)}));
+    $('roll').disabled=!EDIT||s.finishedAt||Number(s.throws)>=3||!p;$('skip').disabled=!EDIT||s.finishedAt||!p;
+    const used=s.scores?.[p?.id]||{};
+    $('cats').innerHTML=C.map(([cat,label])=>{const taken=Object.prototype.hasOwnProperty.call(used,cat),v=s.throws?score(s,cat):null,locked=cat==='double'&&!Object.prototype.hasOwnProperty.call(used,'generala');return`<button class="cat ${v===0&&!taken?'zero':''}" data-cat="${cat}" ${!EDIT||!s.throws||taken||locked||s.finishedAt?'disabled':''}><span>${label}</span><b>${taken?used[cat]:(v===0?'❌ Tachar':(v??'—'))}</b><small>${taken?'Ya anotado':locked?'Primero necesitás Generala':served(s,cat)?'Servida · +5':v===0?'Suma 0 y usa la casilla':'Puntaje posible'}</small></button>`}).join('');
+    document.querySelectorAll('[data-cat]').forEach(b=>b.onclick=()=>action({type:'digital-score',cat:b.dataset.cat}));
+  }
+  let h='<tr><th>Categoría</th>'+(s.players||[]).map(p=>`<th>${safe(p.name)}<br><small>${total(s,p.id)} pts</small></th>`).join('')+'</tr>';
+  C.forEach(([cat,label])=>{h+=`<tr><td>${label}</td>`+(s.players||[]).map(p=>{const used=Object.prototype.hasOwnProperty.call(s.scores?.[p.id]||{},cat),v=used?s.scores[p.id][cat]:'';if(EDIT&&s.mode!=='digital'&&!s.finishedAt)return`<td><input data-p="${p.id}" data-c="${cat}" type="number" min="0" max="999" value="${v}" placeholder="—"></td>`;return`<td>${used&&Number(v)===0?'❌ 0':(used?v:'—')}</td>`}).join('')+'</tr>'});
+  h+='<tr><td><b>TOTAL</b></td>'+(s.players||[]).map(p=>`<td><b>${total(s,p.id)}</b></td>`).join('')+'</tr>';$('table').innerHTML=h;
+  if(EDIT&&s.mode!=='digital'&&!s.finishedAt)document.querySelectorAll('input[data-p]').forEach(i=>i.onchange=()=>action({type:'score',pid:i.dataset.p,cat:i.dataset.c,value:i.value===''?null:Number(i.value)}));
+  const events=(s.events||[]).slice(-10).reverse();$('activity').innerHTML=events.length?events.map(e=>`<div class="event"><b>${safe(e.text||'Movimiento')}</b><div class="muted">${new Date(e.t).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</div></div>`).join(''):'<div class="muted">Sin movimientos todavía.</div>';
+}
+async function load(){try{const r=await fetch('/api/state?code='+encodeURIComponent(CODE),{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);const s=await r.json(),raw=JSON.stringify(s);$('sync').textContent='● en vivo';$('sync').className='good';if(raw!==last){last=raw;render(s)}}catch(e){$('sync').textContent='● sin conexión';$('sync').className='warn'}}
+$('roll').onclick=()=>action({type:'roll'});$('skip').onclick=()=>action({type:'skip'});
+load();setInterval(load,650);
+</script>
+</body>
+</html>
