@@ -73,5 +73,5 @@ jobs:
             --repo "$GITHUB_REPOSITORY" \
             --target "$GITHUB_SHA" \
             --title "GeneralAMO ${VERSION}" \
-            --notes "GeneralAMO candidate: marcador local, dados digitales, persistencia y modo offline. Wi-Fi/Bluetooth todavía no incluidos." \
+            --notes "GeneralAMO candidate: jugadores editables, marcador persistente, dados digitales con tres tiradas, historial y acceso compartido por Wi-Fi/hotspot con enlaces separados de lectura y edición." \
             --prerelease
