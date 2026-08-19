@@ -26,7 +26,7 @@ jobs:
       - name: Install Android SDK
         run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
 
-      - name: Validate local-first MVP
+      - name: Validate GeneralAMO regression contract
         run: python scripts/validate_mvp.py
 
       - name: Prepare fixed candidate signing key
@@ -77,4 +77,4 @@ jobs:
             --repo "$GITHUB_REPOSITORY" \
             --target "$GITHUB_SHA" \
             --title "GeneralAMO ${VERSION}" \
-            --notes "GeneralAMO candidate: semáforo de anotaciones por jugador, puntajes usados visibles en dados digitales, tabla móvil mejorada, icono propio, persistencia compatible y acceso compartido por Wi-Fi/hotspot."
+            --notes "GeneralAMO 0.1.12: reglas tradicionales aclaradas, servido +5 en Escalera/Full/Póker al primer tiro, tachar con 0, historial con vista de partida, actividad detallada, ganador al cierre y juego completo desde otros dispositivos por Wi-Fi/hotspot."
