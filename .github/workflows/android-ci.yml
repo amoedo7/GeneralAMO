@@ -3,6 +3,7 @@ name: android-ci
 on:
   push:
     branches: [main]
+  pull_request:
   workflow_dispatch:
 
 permissions:
@@ -37,24 +38,27 @@ jobs:
       - name: Build release APK
         run: gradle :app:assembleRelease --stacktrace
 
-      - name: Verify APK identity
+      - name: Verify APK identity and version
         run: |
           set -euo pipefail
           APK="app/build/outputs/apk/release/app-release.apk"
+          VERSION="$(sed -n 's/^VERSION_NAME=//p' version.properties)"
+          VERSION_CODE="$(sed -n 's/^VERSION_CODE=//p' version.properties)"
           test -f "$APK"
+          test -n "$VERSION"
+          test -n "$VERSION_CODE"
           "$ANDROID_SDK_ROOT/build-tools/35.0.0/aapt" dump badging "$APK" | tee /tmp/badging.txt
-          grep -q "package: name='com.desarrollamo.generalamo'" /tmp/badging.txt
+          grep -q "package: name='com.desarrollamo.generalamo' versionCode='${VERSION_CODE}' versionName='${VERSION}'" /tmp/badging.txt
           jarsigner -verify -certs "$APK" >/dev/null
 
       - name: Prepare release artifacts
         run: |
           set -euo pipefail
-          VERSION="0.1.${GITHUB_RUN_NUMBER}"
+          VERSION="$(sed -n 's/^VERSION_NAME=//p' version.properties)"
           mkdir -p dist
           cp app/build/outputs/apk/release/app-release.apk "dist/GeneralAMO-${VERSION}.apk"
           sha256sum "dist/GeneralAMO-${VERSION}.apk" > dist/SHA256SUMS.txt
           echo "VERSION=${VERSION}"
-          echo "VERSION_CODE=$((1000 + GITHUB_RUN_NUMBER))"
           echo "PACKAGE=com.desarrollamo.generalamo"
 
       - uses: actions/upload-artifact@v6
@@ -63,15 +67,14 @@ jobs:
           path: dist/*
 
       - name: Publish candidate release
-        if: github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          VERSION="0.1.${GITHUB_RUN_NUMBER}"
+          VERSION="$(sed -n 's/^VERSION_NAME=//p' version.properties)"
           gh release create "v${VERSION}" dist/GeneralAMO-${VERSION}.apk dist/SHA256SUMS.txt \
             --repo "$GITHUB_REPOSITORY" \
             --target "$GITHUB_SHA" \
             --title "GeneralAMO ${VERSION}" \
-            --notes "GeneralAMO candidate: jugadores editables, marcador persistente, dados digitales con tres tiradas, historial y acceso compartido por Wi-Fi/hotspot con enlaces separados de lectura y edición." \
-            --prerelease
+            --notes "GeneralAMO candidate: semáforo de anotaciones por jugador, puntajes usados visibles en dados digitales, tabla móvil mejorada, icono propio, persistencia compatible y acceso compartido por Wi-Fi/hotspot."
