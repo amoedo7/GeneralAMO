@@ -5,6 +5,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
@@ -76,6 +77,32 @@ public class MainActivity extends Activity {
     }
 
     private final class NativeBridge {
+        @JavascriptInterface
+        public String getVersionName() {
+            return BuildConfig.VERSION_NAME;
+        }
+
+        @JavascriptInterface
+        public boolean openExternal(String url) {
+            try {
+                Uri uri = Uri.parse(url);
+                String scheme = uri.getScheme();
+                String host = uri.getHost();
+                if (!"https".equalsIgnoreCase(scheme) || host == null) return false;
+                boolean allowed = host.equalsIgnoreCase("github.com")
+                        || host.equalsIgnoreCase("raw.githubusercontent.com")
+                        || host.endsWith(".githubusercontent.com");
+                if (!allowed) return false;
+                runOnUiThread(() -> {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
+                });
+                return true;
+            } catch (Exception ignored) {
+                return false;
+            }
+        }
+
         @JavascriptInterface
         public String startSharing(String stateJson) {
             try {
