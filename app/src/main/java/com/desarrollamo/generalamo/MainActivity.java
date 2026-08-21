@@ -79,7 +79,12 @@ public class MainActivity extends Activity {
     private final class NativeBridge {
         @JavascriptInterface
         public String getVersionName() {
-            return BuildConfig.VERSION_NAME;
+            try {
+                String version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+                return version == null || version.isEmpty() ? "0.1.16" : version;
+            } catch (Exception ignored) {
+                return "0.1.16";
+            }
         }
 
         @JavascriptInterface
