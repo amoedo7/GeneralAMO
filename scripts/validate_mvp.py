@@ -36,22 +36,30 @@ assert 'eval(' not in js
 required_score_dialog = [
     "'3':[3,6,9,12,15]", "straight:[20,25]", "full:[30,35]", "poker:[40,45]",
     "generala:[50]", "double:[100]", '❌ Tachar', 'Borrar casilla', 'Cancelar',
-    "recordScore(pid,cat,value,'local',true)", "e.target.closest?.('.cell')", 'pointerdown',
+    "recordScore(pid,cat,value,'local',true)", "e.target.closest?.('.cell')",
+    'const ARM_MS=180', "document.addEventListener('click'", 'setTimeout(()=>open(cell),0)',
+    '.scoreChoiceCard.arming', 'pointer-events:none',
 ]
 missing_score_dialog = [item for item in required_score_dialog if item not in score_dialog]
 assert not missing_score_dialog, f'Missing constrained score dialog markers: {missing_score_dialog}'
+pointer_block = re.search(r"document\.addEventListener\('pointerdown'.*?\},true\);", score_dialog, re.S)
+assert pointer_block, 'Missing pointerdown focus guard'
+assert 'open(' not in pointer_block.group(0), 'Score dialog must not open on pointerdown (tap-through risk)'
 assert 'prompt(' not in score_dialog
 assert 'eval(' not in score_dialog
 
 required_remote = [
     'MISMA WI‑FI / HOTSPOT', 'Podés jugar y anotar desde este dispositivo',
     '/api/action?token=', "type:'roll'", "type:'hold'", "type:'digital-score'",
-    "type:'score'", 'setInterval(load,650)', '❌ Tachar',
+    "type:'score'", 'setInterval(load,650)', '❌ Tachar', 'Borrar casilla', 'Cancelar',
     'function pipPositions', 'function scoreRecency', 'score-last', 'score-prev', 'score-old',
-    'repeat(5,minmax(72px,108px))',
+    'repeat(5,minmax(72px,108px))', 'remoteScoreOverlay', 'scoreCell',
+    "'3':[3,6,9,12,15]", 'straight:[20,25]', 'full:[30,35]', 'poker:[40,45]',
+    'const SPECIAL=', 'ARM_MS=180', 'setTimeout(()=>openScoreDialog(b),0)',
 ]
 missing_remote = [item for item in required_remote if item not in remote]
 assert not missing_remote, f'Missing remote-play markers: {missing_remote}'
+assert 'type="number"' not in remote, 'Wi-Fi scorekeeper must not expose free numeric score inputs'
 assert 'Pasar turno' not in remote, 'Remote play must not expose a pass-turn control'
 assert "type:'skip'" not in remote, 'Remote UI must not send skip actions'
 assert '__EDITOR__' in remote and '__CODE__' in remote and '__TOKEN__' in remote
@@ -89,7 +97,7 @@ assert '.activityItem' in css and '.resultCard' in css and '.overlay' in css
 m_name = re.search(r'^VERSION_NAME=(.+)$', version, re.M)
 m_code = re.search(r'^VERSION_CODE=(\d+)$', version, re.M)
 assert m_name and m_code, 'Version properties missing'
-assert m_name.group(1) == '0.1.14'
-assert int(m_code.group(1)) == 1014
+assert m_name.group(1) == '0.1.15'
+assert int(m_code.group(1)) == 1015
 
 print('GENERALAMO_FINAL_OK', m_name.group(1), m_code.group(1))
