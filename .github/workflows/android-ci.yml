@@ -77,4 +77,4 @@ jobs:
             --repo "$GITHUB_REPOSITORY" \
             --target "$GITHUB_SHA" \
             --title "GeneralAMO ${VERSION}" \
-            --notes "GeneralAMO 0.1.14: en Anotar partida ya no se escribe un puntaje libre. Al tocar cada casilla se abre un selector con únicamente los valores válidos para esa categoría, más Tachar, Borrar casilla y Cancelar. Escalera, Full y Póker respetan el bonus de servido configurado. Mantiene turnos, semáforo de anotaciones, totales, historial y juego por Wi-Fi/hotspot."
+            --notes "GeneralAMO 0.1.15: corrige el tap-through al abrir el selector de puntaje. El mismo toque que abre una casilla ya no puede anotar accidentalmente una opción situada debajo del dedo; el selector espera a que termine el gesto y añade una breve guarda de interacción. La planilla compartida por Wi-Fi adopta la misma navegación y las mismas opciones válidas por categoría, sin entrada numérica libre."
