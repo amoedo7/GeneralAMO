@@ -5,6 +5,7 @@ html = Path('app/src/main/assets/index.html').read_text(encoding='utf-8')
 css = Path('app/src/main/assets/style.css').read_text(encoding='utf-8')
 final_css = Path('app/src/main/assets/final.css').read_text(encoding='utf-8')
 js = Path('app/src/main/assets/app.js').read_text(encoding='utf-8')
+score_dialog = Path('app/src/main/assets/score-dialog.js').read_text(encoding='utf-8')
 remote = Path('app/src/main/assets/remote.html').read_text(encoding='utf-8')
 java = Path('app/src/main/java/com/desarrollamo/generalamo/MainActivity.java').read_text(encoding='utf-8')
 chrome = Path('app/src/main/java/com/desarrollamo/generalamo/MainActivityV2.java').read_text(encoding='utf-8')
@@ -16,7 +17,7 @@ required_html = [
     'GeneralAMO', 'Anotar partida', 'Jugar con dados', 'Tirar dados', 'Deshacer',
     'Nueva partida', 'Jugar en varios dispositivos', 'Enlace para jugar / anotar',
     'Escalera servida', 'Full servido', 'Póker servido', 'Tachar',
-    'final.css', 'id="skip" class="btn hidden"',
+    'final.css', 'score-dialog.js', 'id="skip" class="btn hidden"',
     'El turno termina únicamente al anotar o tachar una categoría libre.',
 ]
 missing = [item for item in required_html if item not in html]
@@ -31,6 +32,16 @@ required_js = [
 missing_js = [item for item in required_js if item not in js]
 assert not missing_js, f'Missing game markers: {missing_js}'
 assert 'eval(' not in js
+
+required_score_dialog = [
+    "'3':[3,6,9,12,15]", "straight:[20,25]", "full:[30,35]", "poker:[40,45]",
+    "generala:[50]", "double:[100]", '❌ Tachar', 'Borrar casilla', 'Cancelar',
+    "recordScore(pid,cat,value,'local',true)", "e.target.closest?.('.cell')", 'pointerdown',
+]
+missing_score_dialog = [item for item in required_score_dialog if item not in score_dialog]
+assert not missing_score_dialog, f'Missing constrained score dialog markers: {missing_score_dialog}'
+assert 'prompt(' not in score_dialog
+assert 'eval(' not in score_dialog
 
 required_remote = [
     'MISMA WI‑FI / HOTSPOT', 'Podés jugar y anotar desde este dispositivo',
@@ -78,7 +89,7 @@ assert '.activityItem' in css and '.resultCard' in css and '.overlay' in css
 m_name = re.search(r'^VERSION_NAME=(.+)$', version, re.M)
 m_code = re.search(r'^VERSION_CODE=(\d+)$', version, re.M)
 assert m_name and m_code, 'Version properties missing'
-assert m_name.group(1) == '0.1.13'
-assert int(m_code.group(1)) == 1013
+assert m_name.group(1) == '0.1.14'
+assert int(m_code.group(1)) == 1014
 
 print('GENERALAMO_FINAL_OK', m_name.group(1), m_code.group(1))

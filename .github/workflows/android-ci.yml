@@ -77,4 +77,4 @@ jobs:
             --repo "$GITHUB_REPOSITORY" \
             --target "$GITHUB_SHA" \
             --title "GeneralAMO ${VERSION}" \
-            --notes "GeneralAMO 0.1.13 estable: se elimina el paso de turno sin anotación, se refuerza la adaptación a teléfono/tablet/escritorio, los dados web usan pips CSS consistentes en PC y el semáforo de anotaciones rojo/amarillo/verde queda visible también en navegador. Mantiene reglas tradicionales, historial, actividad detallada y juego por Wi-Fi/hotspot."
+            --notes "GeneralAMO 0.1.14: en Anotar partida ya no se escribe un puntaje libre. Al tocar cada casilla se abre un selector con únicamente los valores válidos para esa categoría, más Tachar, Borrar casilla y Cancelar. Escalera, Full y Póker respetan el bonus de servido configurado. Mantiene turnos, semáforo de anotaciones, totales, historial y juego por Wi-Fi/hotspot."
