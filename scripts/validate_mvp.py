@@ -90,11 +90,12 @@ required_java = [
     'addJavascriptInterface', 'ServerSocket', 'startSharing', 'updateSharedState',
     '/api/state', '/api/action', '/api/score', 'validAction', 'applyRemoteAction',
     'remote.html', 'editor ? editToken : ""', 'X-Content-Type-Options',
-    'getVersionName', 'BuildConfig.VERSION_NAME', 'openExternal', 'Intent.ACTION_VIEW',
+    'getVersionName', 'getPackageManager().getPackageInfo', 'openExternal', 'Intent.ACTION_VIEW',
     '"https".equalsIgnoreCase(scheme)', 'github.com',
 ]
 missing_java = [item for item in required_java if item not in java]
 assert not missing_java, f'Missing native sharing/updater markers: {missing_java}'
+assert 'BuildConfig.VERSION_NAME' not in java, 'Updater must not depend on disabled BuildConfig generation'
 assert 'type.equals("skip")' not in java, 'Native API must reject pass-turn actions'
 
 required_chrome = ['WebChromeClient', 'onJsConfirm', 'result.confirm()', 'result.cancel()', 'AlertDialog']
