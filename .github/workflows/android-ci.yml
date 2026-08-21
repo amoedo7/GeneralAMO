@@ -77,4 +77,4 @@ jobs:
             --repo "$GITHUB_REPOSITORY" \
             --target "$GITHUB_SHA" \
             --title "GeneralAMO ${VERSION}" \
-            --notes "GeneralAMO 0.1.15: corrige el tap-through al abrir el selector de puntaje. El mismo toque que abre una casilla ya no puede anotar accidentalmente una opción situada debajo del dedo; el selector espera a que termine el gesto y añade una breve guarda de interacción. La planilla compartida por Wi-Fi adopta la misma navegación y las mismas opciones válidas por categoría, sin entrada numérica libre."
+            --notes "GeneralAMO 0.1.16 agrega Ajustes con actualización directa independiente de StoreAMO. La app muestra su versión, consulta la última release oficial y permite descargar el APK desde GitHub con confirmación normal de Android. También aclara la compatibilidad: Android puede crear/compartir la mesa; iPhone/iPad pueden jugar, anotar o mirar desde Safari mediante el enlace Wi-Fi, aunque todavía no existe una app iOS instalable independiente."

@@ -6,6 +6,7 @@ css = Path('app/src/main/assets/style.css').read_text(encoding='utf-8')
 final_css = Path('app/src/main/assets/final.css').read_text(encoding='utf-8')
 js = Path('app/src/main/assets/app.js').read_text(encoding='utf-8')
 score_dialog = Path('app/src/main/assets/score-dialog.js').read_text(encoding='utf-8')
+updater = Path('app/src/main/assets/updater.js').read_text(encoding='utf-8')
 remote = Path('app/src/main/assets/remote.html').read_text(encoding='utf-8')
 java = Path('app/src/main/java/com/desarrollamo/generalamo/MainActivity.java').read_text(encoding='utf-8')
 chrome = Path('app/src/main/java/com/desarrollamo/generalamo/MainActivityV2.java').read_text(encoding='utf-8')
@@ -17,7 +18,7 @@ required_html = [
     'GeneralAMO', 'Anotar partida', 'Jugar con dados', 'Tirar dados', 'Deshacer',
     'Nueva partida', 'Jugar en varios dispositivos', 'Enlace para jugar / anotar',
     'Escalera servida', 'Full servido', 'Póker servido', 'Tachar',
-    'final.css', 'score-dialog.js', 'id="skip" class="btn hidden"',
+    'final.css', 'score-dialog.js', 'updater.js', 'id="skip" class="btn hidden"',
     'El turno termina únicamente al anotar o tachar una categoría libre.',
 ]
 missing = [item for item in required_html if item not in html]
@@ -47,6 +48,16 @@ assert pointer_block, 'Missing pointerdown focus guard'
 assert 'open(' not in pointer_block.group(0), 'Score dialog must not open on pointerdown (tap-through risk)'
 assert 'prompt(' not in score_dialog
 assert 'eval(' not in score_dialog
+
+required_updater = [
+    '⚙️ Ajustes', 'Buscar actualización', 'Descargar actualización', 'Versión instalada',
+    'api.github.com/repos/', '/releases/latest', 'getVersionName', 'openExternal',
+    'Android', 'iPhone / iPad', 'Safari', 'Todavía no existe una app iOS instalable independiente.',
+]
+missing_updater = [item for item in required_updater if item not in updater]
+assert not missing_updater, f'Missing updater/settings markers: {missing_updater}'
+assert 'http://' not in updater, 'Updater must only use HTTPS public endpoints'
+assert 'eval(' not in updater
 
 required_remote = [
     'MISMA WI‑FI / HOTSPOT', 'Podés jugar y anotar desde este dispositivo',
@@ -79,9 +90,12 @@ required_java = [
     'addJavascriptInterface', 'ServerSocket', 'startSharing', 'updateSharedState',
     '/api/state', '/api/action', '/api/score', 'validAction', 'applyRemoteAction',
     'remote.html', 'editor ? editToken : ""', 'X-Content-Type-Options',
+    'getVersionName', 'getPackageManager().getPackageInfo', 'openExternal', 'Intent.ACTION_VIEW',
+    '"https".equalsIgnoreCase(scheme)', 'github.com',
 ]
 missing_java = [item for item in required_java if item not in java]
-assert not missing_java, f'Missing native sharing markers: {missing_java}'
+assert not missing_java, f'Missing native sharing/updater markers: {missing_java}'
+assert 'BuildConfig.VERSION_NAME' not in java, 'Updater must not depend on disabled BuildConfig generation'
 assert 'type.equals("skip")' not in java, 'Native API must reject pass-turn actions'
 
 required_chrome = ['WebChromeClient', 'onJsConfirm', 'result.confirm()', 'result.cancel()', 'AlertDialog']
@@ -97,7 +111,7 @@ assert '.activityItem' in css and '.resultCard' in css and '.overlay' in css
 m_name = re.search(r'^VERSION_NAME=(.+)$', version, re.M)
 m_code = re.search(r'^VERSION_CODE=(\d+)$', version, re.M)
 assert m_name and m_code, 'Version properties missing'
-assert m_name.group(1) == '0.1.15'
-assert int(m_code.group(1)) == 1015
+assert m_name.group(1) == '0.1.16'
+assert int(m_code.group(1)) == 1016
 
 print('GENERALAMO_FINAL_OK', m_name.group(1), m_code.group(1))
