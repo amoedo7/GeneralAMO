@@ -1,0 +1,59 @@
+{
+  "schema": "desarrollamo.amo.v1",
+  "amo_version": "1.0.0",
+  "id": "generalamo",
+  "name": "GeneralAMO",
+  "kind": "android-product",
+  "origin": "native",
+  "membership": "candidate",
+  "trust": "inspected",
+  "unit": {
+    "purpose": "Proveer una aplicación local-first de Generala con marcador, dados digitales y juego compartido en red local.",
+    "responsibility": "Mantener la lógica de juego, la experiencia Android y la interoperabilidad local verificables sin asumir autoridad sobre StoreAMO, firmas o distribución global.",
+    "owner": "human_responsible",
+    "capabilities": ["android-app", "local-game", "local-network-sharing"]
+  },
+  "model": {
+    "inherits": [],
+    "context": ["README.md", "version.properties", "scripts/validate_mvp.py", ".github/workflows/android-ci.yml"],
+    "rules": [
+      "GeneralAMO no tiene autoridad para cambiar StoreAMO ni su semilla canónica.",
+      "La firma y publicación de APKs requieren los gates específicos de distribución y seguridad.",
+      "El AutoCheck debe conservar las regresiones funcionales existentes antes de considerar saludable la unidad.",
+      "Una ejecución de CI verde no convierte por sí sola un artefacto en instalado físicamente."
+    ]
+  },
+  "map": {
+    "parent": "raizamo",
+    "children": [],
+    "relations": [
+      {"type": "distributed-by", "target": "storeamo", "strength": "medium"}
+    ],
+    "covers": ["app/**", "scripts/**", "version.properties", ".github/workflows/android-ci.yml"]
+  },
+  "policy": {
+    "cross_domain_changes_require_external_gates": true,
+    "self_declared_pass_allowed": false
+  },
+  "provenance": {
+    "source_uri": "https://github.com/amoedo7/GeneralAMO",
+    "source_type": "git-repository",
+    "source_ref": "main"
+  },
+  "health": {
+    "checks": [
+      {
+        "id": "generalamo-autocheck",
+        "type": "command",
+        "command": "bash scripts/autocheck.sh",
+        "cwd": ".",
+        "timeout_seconds": 300,
+        "description": "Valida el contrato canónico y ejecuta la regresión funcional determinista existente de GeneralAMO."
+      }
+    ]
+  },
+  "evidence": {
+    "status": "inspected",
+    "refs": ["scripts/validate_mvp.py", ".github/workflows/android-ci.yml", "scripts/autocheck.sh"]
+  }
+}

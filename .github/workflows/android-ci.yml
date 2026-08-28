@@ -26,8 +26,8 @@ jobs:
       - name: Install Android SDK
         run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
 
-      - name: Validate GeneralAMO regression contract
-        run: python scripts/validate_mvp.py
+      - name: Canonical AutoCheck
+        run: bash scripts/autocheck.sh
 
       - name: Prepare fixed signing key
         run: |
