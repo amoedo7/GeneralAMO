@@ -15,7 +15,7 @@
   },
   "model": {
     "inherits": [],
-    "context": ["README.md", "version.properties", "scripts/validate_mvp.py", ".github/workflows/android-ci.yml"],
+    "context": ["README.md", "RECOVERY.md", "version.properties", "scripts/validate_mvp.py", ".github/workflows/android-ci.yml"],
     "rules": [
       "GeneralAMO no tiene autoridad para cambiar StoreAMO ni su semilla canónica.",
       "La firma y publicación de APKs requieren los gates específicos de distribución y seguridad.",
@@ -54,6 +54,6 @@
   },
   "evidence": {
     "status": "inspected",
-    "refs": ["scripts/validate_mvp.py", ".github/workflows/android-ci.yml", "scripts/autocheck.sh"]
+    "refs": ["scripts/validate_mvp.py", ".github/workflows/android-ci.yml", "scripts/autocheck.sh", "RECOVERY.md"]
   }
 }
