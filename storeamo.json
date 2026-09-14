@@ -17,6 +17,7 @@
     "provider": "github",
     "repo": "amoedo7/GeneralAMO",
     "channel": "stable",
+    "version_code": "1016",
     "assets": [
       {
         "platform": "android",
